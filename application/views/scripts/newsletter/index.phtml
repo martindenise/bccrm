@@ -1,0 +1,65 @@
+<script type="text/javascript">
+// Edit region stylesheet
+editstyle = '<?= SITE_ROOT."/js/wyzzstyles/editarea.css" ?>';
+wyzzStyle = '<?= SITE_ROOT."/js/wyzzstyles/wyzzstyle.css" ?>';
+iconsPath = '<?= SITE_ROOT."/js/wyzzicons/" ?>';
+editorWidth = 600;
+editorHeight = 300;
+</script>
+<script type="text/javascript" src="<?= SITE_ROOT.'/js/wyzz.js' ?>"></script>
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>
+
+<div id="profileContainer">
+<form name="contact" action="<?= $this->url(array('controller'=>'newsletter'),'default',true); ?>" method="post">
+<table width="470" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th colspan="2">Send a Newsletter</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><div align="right"><strong>Select Group</strong></div></td>
+    <td><div align="left">
+      <select name="group" id="group" style="font-size:11px; width:100px;">
+        <option value="all" selected="selected">(all)</option>
+        <option value="leads">Lead</option>
+        <option value="booked">Bookings</option>
+        <option value="cold_leads">Cold Leads</option>
+        <option value="dead_leads">Dead Leads</option>
+      </select>
+</div></td>
+  </tr>
+  <tr>
+    <td width="186"><div align="right"><strong>Email Sender</strong></div></td>
+    <td width="234"><div align="left">
+        <input type="text" name="email_sender" id="email_sender" size="30" style="margin:0" value="<?= !empty($this->sender) ? $this->sender : SENDER_EMAIL_ADDRESS ?>" />
+    </div></td>
+    </tr>
+  <tr>
+    <td><div align="right"><strong>Subject</strong></div></td>
+    <td><div align="left">
+        <input name="email_subject" type="text" id="email_subject" size="35" style="margin:0" value="<?= !empty($this->subject) ? $this->subject : NEWSLETTER_EMAIL_SUBJECT ?>" />
+    </div></td>
+    </tr>
+  <tr>
+    <td colspan="2"><div align="center"><strong>Message</strong></div></td>
+    </tr>
+  <tr>
+    <td colspan="2"><div align="center" style="clear:both">
+        <textarea name="email_body" id="email_body" cols="65" rows="8"><?= !empty($this->body) ? $this->body : '' ?></textarea>
+        <script type="text/javascript">make_wyzz('email_body');</script>
+    </div></td>
+    </tr>
+  <tr>
+    <td colspan="2"><div align="center">
+      <input type="submit" name="button" id="button" value="Send &gt;&gt;" style="text-align:center; width:auto" />
+    </div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+</div>

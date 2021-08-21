@@ -1,0 +1,47 @@
+<div id="profileContainer">
+<link href="<?= SITE_ROOT.'/css/calendar.css' ?>" media="screen" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?= SITE_ROOT.'/js/calendar.js' ?>"></script>
+
+<form name="addEnrollment" action="<?= $this->url(array('controller'=>'profile','action'=>'changetype'),'default',true).'/?type='.$this->leadType.'&id='.$this->leadId; ?>" method="post">
+<table width="300" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th colspan="2">Lead to Booked</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><div align="right">Contact Name</div></td>
+    <td><div align="left"><input type="text" name="ev_day_cname" id="ev_day_cname" value="<?= !empty($this->formData['ev_day_cname']) ? $this->formData['ev_day_cname'] : ''?>" />
+    </div></td>
+ <tr/>
+ <tr>
+    <td><div align="right">Contact Number</div></td>
+    <td><div align="left"><input type="text" name="ev_day_cno" id="ev_day_cno" value="<?= !empty($this->formData['ev_day_cno']) ? $this->formData['ev_day_cno'] : ''?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Event Date</div></td>
+    <td><div align="left">
+        <input type="text" name="event_date" id="event_date" style="width:70px; text-align:center" readonly="readonly" value="<?= !empty($this->formData['event_date']) ? $this->formData['event_date'] : ''?>" />
+        <img src="<?= SITE_ROOT."/images/icons/calendar.png" ?>" name="event_date_button" width="10" height="10" id="event_date_button" style="cursor:pointer; " />
+        <script type="text/javascript">
+        Calendar.setup({
+            inputField     :    "event_date",
+            ifFormat       :    "%m/%d/%Y",
+            button         :    "event_date_button",
+            singleClick    :    false,
+            step           :    1
+        });
+   		</script>
+    </div></td>
+  </tr>
+  <tr>
+    <td colspan="2"><div align="center">
+      <input type="submit" name="button" id="button" value="Change to Booked &gt;&gt;" style="text-align:center; width:auto" />
+    </div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+</div>

@@ -1,0 +1,163 @@
+<div id="addNewLeadContainer">
+<link href="<?= SITE_ROOT.'/css/calendar.css' ?>" media="screen" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?= SITE_ROOT.'/js/calendar.js' ?>"></script>
+
+<form name="editLead" action="<?= $this->url(array('controller'=>'profile','action'=>'edit'),'default',true).'/?type=booked&id='.$this->leadId; ?>" method="post">
+<table width="550" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th colspan="4">Edit Booking</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td width="128"><div align="right">First Name</div></td>
+    <td width="132">
+      <div align="left">
+        <input type="text" name="first_name" id="first_name" value="<?= $this->leadData['first_name']; ?>" />
+      </div></td>
+    <td><div align="right">Last Name</div></td>
+    <td><div align="left">
+        <input name="last_name" type="text" id="last_name" value="<?= $this->leadData['last_name']; ?>" />
+    </div></td>
+  </tr>
+  <tr>
+ <td><div align="right">Company Name</div></td>
+    <td><div align="left">
+        <input type="text" name="company" id="company" value="<?= !empty($this->leadData['company']) ? $this->leadData['company'] : ''?>" />
+    </div></td>
+    <td><div align="right">Home Phone</div></td>
+    <td><div align="left">
+        <input name="home_phone" type="text" id="home_phone" value="<?= $this->leadData['home_phone']; ?>" />
+    </div></td>
+  </tr>
+  <tr>
+	<td><div align="right">Mobile Phone</div></td>
+    <td><div align="left">
+        <input name="mobile_phone" type="text" id="mobile_phone" value="<?= $this->leadData['mobile_phone']; ?>" />
+    </div></td>
+    <td><div align="right">Fax Number</div></td>
+    <td><div align="left">
+        <input name="fax" type="text" id="fax" value="<?= $this->leadData['fax']; ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Address</div></td>
+    <td><div align="left">
+        <input name="address" type="text" id="address" value="<?= $this->leadData['address']; ?>" />
+    </div></td>
+    <td><div align="right">City</div></td>
+    <td><div align="left">
+        <input name="city" type="text" id="city" value="<?= $this->leadData['city']; ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">State</div></td>
+    <td><div align="left">
+        <input name="state" type="text" id="state" value="<?= $this->leadData['state']; ?>" />
+    </div></td>
+    <td><div align="right">Zip</div></td>
+    <td><div align="left">
+      <input name="zip" type="text" id="zip" style="width:40px;" value="<?= $this->leadData['zip']; ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Email Address</div></td>
+    <td><div align="left">
+        <input name="email" type="text" id="email" value="<?= $this->leadData['email']; ?>" />
+    </div></td>
+    <td><div align="right">Market</div></td>
+    <td><label for="campus_id"></label>
+      <div align="left">
+		<?= $this->formSelect('campus_id',$this->selectedCampus,array('style' => 'font-size:11px'),$this->campuses); ?>
+      </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Contact Name</div></td>
+    <td><div align="left"><input type="text" name="ev_day_cname" id="ev_day_cname" value="<?= !empty($this->leadData['ev_day_cname']) ? $this->leadData['ev_day_cname'] : ''?>" />
+    </div></td>
+    <td><div align="right">Contact Number</div></td>
+    <td><div align="left"><input type="text" name="ev_day_cno" id="ev_day_cno" value="<?= !empty($this->leadData['ev_day_cno']) ? $this->leadData['ev_day_cno'] : ''?>" />
+    </div></td></td>
+  </tr>
+  <tr>
+    <td><div align="right">Best time to contact</div></td>
+    <td><div align="left">
+      <input name="best_contact_time" type="text" id="best_contact_time" value="<?= $this->leadData['best_contact_time']; ?>" />
+    </div></td>
+    <td><div align="right">Hear about us</div></td>
+    <td><label for="hear_about"></label>
+      <div align="left">
+        <input name="hear_about" type="text" id="hear_about" value="<?= $this->leadData['hear_about']; ?>" />
+      </div></td>
+  </tr>
+  <tr>
+    <td><div align="right"> Contact Method</div></td>
+    <td><div align="left">
+    <label><input type="radio" name="contact_method" value="Phone" style="width:auto;" <?= $this->leadData['contact_method'] == 'Phone' ? 'checked="checked"' : ''; ?> />Phone</label>
+    <label><input name="contact_method" type="radio" style="width:auto;" value="Email"  <?= $this->leadData['contact_method'] == 'Email' ? 'checked="checked"' : ''; ?> /> Email</label>
+    </div></td>
+    <td><div align="right">Comments</div></td>
+    <td rowspan="2">
+    <div align="left">
+      <textarea name="comments" id="comments" style="width:100px; height: 40px; margin:0;"><?= $this->leadData['comments']; ?>
+      </textarea>
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Sales Person</div></td>
+    <td><div align="left">
+    <?php
+    	# UPDATE 11.11.2009
+    	# Do not allow anyone to change the sales person for an user; allow only the admin to do that
+    	if ($this->IsAdmin) {
+    		echo $this->formSelect('sales_person_id',$this->selectedSPerson,array('style' => 'font-size:11px'),$this->sPersons);
+    	} else {
+    		echo $this->sPersons[$this->selectedSPerson];
+    	}
+    ?>
+    </div></td>
+    <td>&nbsp;</td>
+    </tr>
+  <tr>
+    <td><div align="right">Total Amount</div></td>
+    <td><div align="left">
+        <input name="total_amount" type="text" id="total_amount" style="width:40px;text-align:center" onblur="calcDue(this.form)" value="<?= $this->leadData['total_amount']; ?>" />
+    </div></td>
+    <td><div align="right">Contact via SMS</div></td>
+    <td><div align="left">
+        <label>
+        <input type="radio" name="via_sms" value="Yes" style="width:auto;" <?= $this->leadData['via_sms'] == 'Yes' ? 'checked="checked"' : ''; ?> />
+          Yes</label>
+        <label>
+        <input name="via_sms" type="radio" style="width:auto;" value="No" <?= $this->leadData['via_sms'] == 'No' ? 'checked="checked"' : ''; ?> />
+          No</label>
+    </div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><div align="right">Event Date</div></td>
+    <td><div align="left">
+        <input name="event_date" type="text" id="event_date" style="width:70px; text-align:center" value="<?= $this->leadData['event_date']; ?>" readonly="readonly" />
+        <img src="<?= SITE_ROOT."/images/icons/calendar.png" ?>" name="event_date_button" width="10" height="10" id="event_date_button" style="cursor:pointer; " />
+        <script type="text/javascript">
+        Calendar.setup({
+            inputField     :    "event_date",
+            ifFormat       :    "%m/%d/%Y",
+            button         :    "event_date_button",
+            singleClick    :    false,
+            step           :    1
+        });
+   		</script>
+    </div></td>
+  </tr>
+  <tr>
+    <td colspan="4"><div align="center">
+      <input type="submit" name="button" id="button" value="Save Modifications &gt;&gt;" style="text-align:center; width:auto" />
+    </div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+</div>

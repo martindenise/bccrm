@@ -1,0 +1,69 @@
+<script type="text/javascript">
+// Edit region stylesheet
+editstyle = '<?= SITE_ROOT."/js/wyzzstyles/editarea.css" ?>';
+wyzzStyle = '<?= SITE_ROOT."/js/wyzzstyles/wyzzstyle.css" ?>';
+iconsPath = '<?= SITE_ROOT."/js/wyzzicons/" ?>';
+editorWidth = 500;
+editorHeight = 200;
+</script>
+<script type="text/javascript" src="<?= SITE_ROOT.'/js/wyzz.js' ?>"></script>
+
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function changeEmail(targ,selObj,restore){ //v3.0
+  eval(targ+".location='<?= SITE_ROOT; ?>/emails?id="+selObj.options[selObj.selectedIndex].value+"'");
+  if (restore) selObj.selectedIndex=0;
+}
+//-->
+</script>
+
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>
+
+<div id="profileContainer">
+<!-- select campus -->
+Select email : <?= $this->formSelect('id','0',array(
+												'style' => 'font-size:11px; width:150px; margin:0; margin-left:20px;',
+												'onchange' =>"changeEmail('parent',this,0)"
+												),
+												$this->Emails); ?>
+<br>
+
+    <br>
+		<form name="saveEmail" method="POST" action="">
+         <table id="emailMethod" width="550" border="0" cellspacing="0" class="tblStyle2">
+              <thead>
+              <tr>
+              	<th colspan="2">New Stock Email</th>
+              </tr>
+              </thead>
+              <tr>
+                <td><div align="right"><strong>Subject</strong></div></td>
+                <td><div align="left">
+                  <input name="subject" type="text" id="subject" style="margin:0" value="<?= $this->emailData['subject']; ?>" size="30" />
+                </div></td>
+              </tr>
+              <tr>
+                <td colspan="2"><div align="center"><strong>Message</strong></div></td>
+  </tr>
+              <tr>
+                <td colspan="2">
+                <div align="center" style="clear:both">
+                  <textarea name="body" id="body" cols="65" rows="8"><?= $this->emailData['body']; ?></textarea>
+                  <script type="text/javascript">make_wyzz('body');</script>
+                </div></td>
+  </tr>
+              <tr>
+                <td colspan="2"><div align="center">
+                  <input type="submit" name="button" id="button" value="Save" />
+                </div></td>
+              </tr>
+              <tr>
+                <td colspan="2">&nbsp;</td>
+              </tr>
+           </table>
+  </form>
+</div>

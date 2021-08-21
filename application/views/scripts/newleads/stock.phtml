@@ -1,0 +1,66 @@
+<script type="text/javascript">
+// Edit region stylesheet
+editstyle = '<?= SITE_ROOT."/js/wyzzstyles/editarea.css" ?>';
+wyzzStyle = '<?= SITE_ROOT."/js/wyzzstyles/wyzzstyle.css" ?>';
+iconsPath = '<?= SITE_ROOT."/js/wyzzicons/" ?>';
+editorWidth = 500;
+editorHeight = 200;
+</script>
+<script type="text/javascript" src="<?= SITE_ROOT.'/js/wyzz.js' ?>"></script>
+
+<div id="profileContainer">
+  <br>
+    <br>
+<?php
+	if (!empty($this->emailData)) {
+?>
+		<form name="saveEmail" method="POST" action="?id=<?= $this->id; ?>">
+         <table id="emailMethod" width="550" border="0" cellspacing="0" class="tblStyle2">
+              <thead>
+              <tr>
+              	<th colspan="2">Stock Email</th>
+              </tr>
+              </thead>
+              <tr>
+                <td width="40%"><div align="right"><strong>Market</strong></div></td>
+                <td width="60%"><div align="left"><?= $this->emailData['name']; ?></div></td>
+              </tr>
+              <tr>
+                <td><div align="right"><strong>Subject</strong></div></td>
+                <td><div align="left">
+                  <input name="subject" type="text" id="subject" style="margin:0" value="<?= $this->emailData['subject']; ?>" size="30" />
+                </div></td>
+              </tr>
+              <tr>
+                <td colspan="2"><div align="center"><strong>Message</strong></div></td>
+  </tr>
+              <tr>
+                <td colspan="2">
+                <div align="center" style="clear:both">
+                  <textarea name="body" id="body" cols="65" rows="8"><?= $this->emailData['body']; ?></textarea>
+                  <script type="text/javascript">make_wyzz('body');</script>
+                </div></td>
+  </tr>
+              <tr>
+                <td colspan="2"><div align="center">
+                  <input type="submit" name="button" id="button" value="Send" />
+                </div></td>
+              </tr>
+              <tr>
+                <td colspan="2"><strong>You can use wildcards in the emails, to personalize them.<br />
+                The wildcards you can use are the following:</strong><br />
+                  {first_name} - Client's First Name<br />
+                  {last_name} - Client's Last Name<br />
+                  {market_name} - Client's market<br />
+                  {sales_person_name} - Client's Assigned Sales Person Name             <br />
+                  {sales_person_email} - Client's Assigned Sales Person Email Address<br /></td>
+              </tr>
+              <tr>
+                <td colspan="2">&nbsp;</td>
+              </tr>
+           </table>
+  </form>
+<?php
+}
+?>
+</div>

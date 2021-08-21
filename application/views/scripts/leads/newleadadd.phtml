@@ -1,0 +1,154 @@
+<?php
+
+echo $this->categoryMenu('/views/scripts/leads/leads_menu.phtml');
+
+if ($this->errors) {
+	echo $this->errorDiv($this->errors);
+}
+
+?>
+
+<div id="addNewLeadContainer">
+<link href="<?= SITE_ROOT.'/css/calendar.css' ?>" media="screen" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?= SITE_ROOT.'/js/calendar.js' ?>"></script>
+<form name="addLead" action="<?= $this->url(array('controller'=>'leads','action'=>'add'),'default',true); ?>/newlead" method="post">
+<table width="550" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th width="550" colspan="4">Add New Contact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><div align="right">First Name </div></td>
+      <td><label>
+          <div align="left">
+            <input type="text" name="first_name" id="first_name" value="<?= !empty($this->formData['first_name']) ? $this->formData['first_name'] : ''?>" />
+          </div>
+        </label></td>
+      <td><div align="right">Last Name</div></td>
+      <td><div align="left">
+          <input type="text" name="last_name" id="last_name" value="<?= !empty($this->formData['last_name']) ? $this->formData['last_name'] : ''?>" />
+      </div></td>
+    </tr>
+    <tr>
+     <td><div align="right">Company Name</div></td>
+    <td><div align="left">
+        <input type="text" name="company" id="company" value="<?= !empty($this->formData['company']) ? $this->formData['company'] : ''?>" />
+    </div></td>
+      <td><div align="right">Home Phone</div></td>
+      <td><div align="left">
+          <input type="text" name="home_phone" id="home_phone" value="<?= !empty($this->formData['home_phone']) ? $this->formData['home_phone'] : ''?>" />
+      </div></td>
+    </tr>
+    <tr>
+      <td><div align="right">Mobile Phone</div></td>
+      <td><div align="left">
+          <div align="left">
+            <input type="text" name="mobile_phone" id="mobile_phone" value="<?= !empty($this->formData['mobile_phone']) ? $this->formData['mobile_phone'] : ''?>" />
+          </div>
+      </div></td>
+      <td><div align="right">Fax Number</div></td>
+      <td><div align="left">
+          <input type="text" name="fax" id="fax" value="<?= !empty($this->formData['fax']) ? $this->formData['fax'] : ''?>" />
+      </div></td>
+    </tr>
+    <tr>
+      <td><div align="right">Address</div></td>
+      <td><div align="left">
+          <input type="text" name="address" id="address" value="<?= !empty($this->formData['address']) ? $this->formData['address'] : ''?>" />
+      </div></td>
+      <td><div align="right">City</div></td>
+      <td><div align="left">
+          <input type="text" name="city" id="city" value="<?= !empty($this->formData['city']) ? $this->formData['city'] : ''?>" />
+      </div></td>
+    </tr>
+    <tr>
+      <td><div align="right">State</div></td>
+      <td><div align="left">
+          <input type="text" name="state" id="state" value="<?= !empty($this->formData['state']) ? $this->formData['state'] : ''?>" />
+      </div></td>
+      <td><div align="right">Zip</div></td>
+      <td><div align="left">
+          <input type="text" name="zip" id="zip" style="width:40px;" value="<?= !empty($this->formData['zip']) ? $this->formData['zip'] : ''?>" />
+      </div></td>
+    </tr>
+    <tr>
+      <td><div align="right">Email Address</div></td>
+      <td><div align="left">
+          <input type="text" name="email" id="email" value="<?= !empty($this->formData['email']) ? $this->formData['email'] : ''?>" />
+      </div></td>
+      <td><div align="right">Market</div></td>
+      <td><label for="campus_id"></label>
+          <div align="left">
+            <?= $this->formSelect('campus_id','select',array('style' => 'font-size:11px'),$this->campuses); ?>
+        </div></td>
+    </tr>
+    <tr>
+      <td><div align="right">Contact via SMS</div></td>
+      <td><div align="left">
+          <label>
+          <input type="radio" name="via_sms" value="Yes" style="width:auto;" />
+            Yes</label>
+          <label>
+          <input name="via_sms" type="radio" style="width:auto;" value="No" checked="checked" />
+            No</label>
+      </div></td>
+      <td><div align="right">Event Date</div></td>
+      <td><div align="left">
+          <input type="text" name="event_date" id="event_date" style="width:70px; text-align:center" readonly="readonly" value="<?= !empty($this->formData['event_date']) ? $this->formData['event_date'] : ''?>" />
+        <img src="<?= SITE_ROOT."/images/icons/calendar.png" ?>" name="event_date_button" width="10" height="10" id="event_date_button" style="cursor:pointer; " />
+        <script type="text/javascript">
+        Calendar.setup({
+            inputField     :    "event_date",
+            ifFormat       :    "%m/%d/%Y",
+            button         :    "event_date_button",
+            singleClick    :    false,
+            step           :    1
+        });
+   		</script>
+      </div></td>
+    </tr>
+    <tr>
+      <td><div align="right">Best time to contact</div></td>
+      <td><div align="left">
+          <input type="text" name="best_contact_time" id="best_contact_time" value="<?= !empty($this->formData['best_contact_time']) ? $this->formData['best_contact_time'] : ''?>" />
+      </div></td>
+      <td><div align="right">Hear about us</div></td>
+      <td><label for="label"></label>
+          <div align="left">
+            <input type="text" name="hear_about" id="label" value="<?= !empty($this->formData['hear_about']) ? $this->formData['hear_about'] : ''?>" />
+        </div></td>
+    </tr>
+    <tr>
+      <td><div align="right"> Contact Method</div></td>
+      <td><div align="left">
+          <label>
+            <input type="radio" name="contact_method" value="Phone" style="width:auto;" />
+            Phone</label>
+          <label>
+            <input name="contact_method" type="radio" style="width:auto;" value="Email" checked="checked" />
+            Email</label>
+      </div></td>
+      <td><div align="right">Comments</div></td>
+      <td rowspan="2"><div align="left">
+          <textarea name="comments" id="comments" style="width:100px; height: 40px; margin:0;"><?= !empty($this->formData['comments']) ? $this->formData['comments'] : ''?>
+      </textarea>
+      </div></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    
+    
+  <tr>
+    <td colspan="4"><div align="center">
+      <input type="submit" name="button" id="button" value="Save New Contact >>" style="text-align:center; width:auto" />
+    </div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+</div>

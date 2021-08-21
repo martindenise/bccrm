@@ -1,0 +1,33 @@
+<script type="text/javascript">
+function PrintDivContent()
+    {
+    	var content = $("#printContent").html();
+		var pwin=window.open('','print_content','width=100,height=100');
+
+		pwin.document.open();
+		pwin.document.write('<html><body onload="window.print()">'+content+'</body></html>');
+		pwin.document.close();
+
+		setTimeout(function(){pwin.close();},1000);
+
+	}
+</script>
+<table width="20%" border="0" style="margin: 0 20px 0 30px; line-height:20px;">
+  <tr>
+    <td style="text-align:left">&nbsp;</td>
+    <td style="text-align:left"><img src="<?= SITE_ROOT; ?>/images/icons/print.png" width="10" height="10" /> <a href="javascript:PrintDivContent()" >Print</a></td>
+  </tr>
+</table>
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>
+
+<?= $this->output; ?>
+
+
+
+<!-- content for print/export -->
+<div id="printContent" style="display:none">
+<?= $this->printContent ? $this->printContent : ''; ?>
+</div>

@@ -1,0 +1,133 @@
+<!-- category menu -->
+<?= $this->categoryMenu('/views/scripts/markets/markets_menu.phtml'); ?>
+
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>
+
+<div id="addNewLeadContainer">
+<link href="<?= SITE_ROOT.'/css/calendar.css' ?>" media="screen" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?= SITE_ROOT.'/js/calendar.js' ?>"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("input[name=applyDiscount]").change(function() {
+		$("#percentageRow").hide();
+		$("#fixedRow").hide();
+		if ($(this).val() == 'percent') {
+			$("#percentageRow").show();
+		} else {
+			$("#fixedRow").show();
+		}
+	});
+	$("#applyPriceModif").click(function() {
+		mode = $("input[name=applyDiscount]:checked").val();
+		type = $("#modifType").val();
+		if ('percent' == mode) {
+			amount = $("#percentage").val();
+			if (!amount.match(/^[0-9]{2}$/)) {
+				alert('Invalid percentage amount');
+				return false;
+			}
+		} else if ('fixed' == mode) {
+			amount = $("#fixed").val();
+			if (!amount.match(/^[0-9]*$/)) {
+				alert('Invalid fixed amount');
+				return false;
+			}
+		}
+		applyPriceModification(mode, amount, type);
+	});
+});
+
+function applyPriceModification(mode, amount, type) {
+	negatives = 0;
+	$("input.pricesBox").each(function() {
+		oldValue = $(this).val();
+		if ('0' == oldValue) { return; }
+		if ('percent' == mode) {
+			newValue = Math.round(eval(oldValue + type + " (" + amount + "/100)*" + oldValue));
+		} else {
+			newValue = Math.round(eval(oldValue + type + amount));
+		}
+		if (0 > newValue) {
+			newValue = 0;
+			negatives = 1;
+		}
+		$(this).val(newValue);
+	});
+	if (negatives) {
+		alert('Some new prices are negative. They we\'re defaulted to 0');
+	}
+}
+</script>
+<form name="addLead" action="<?= $this->url(array('controller'=>'markets','action'=>'edit-prices'),'default',true); ?>" method="post">
+<table width="350" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th colspan="2">Set Weekend Prices</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+  	<td><div align="right">Modify Prices</div></td>
+    <td><div align="left">
+    	<input type="radio" name="applyDiscount" id="percentDiscount" value="percent" style="width:auto" /> <label for="percentDiscount">Percent</label> &nbsp;&nbsp;
+	    <input type="radio" name="applyDiscount" id="fixedDiscount" value="fixed" style="width:auto" /><label for="fixedDiscount"> Fixed Amount</label>
+    </div></td>
+  </tr>
+  <tr id="percentageRow" style="display:none">
+  	<td><div align="right">Percentage</div></td>
+    <td><div align="left"><input type="text" name="percentage" id="percentage" style="width:30px; text-align:center;" value="0" maxlength="2" />%</div></td>
+  </tr>
+  <tr id="fixedRow" style="display:none">
+  	<td><div align="right">Fixed Amount</div></td>
+    <td><div align="left">$ <input type="text" name="fixed" id="fixed" style="width:50px; text-align:center;" value="0" /></div></td>
+  </tr>
+  <tr>
+  	<td><div align="right">Modification Type</div></td>
+    <td><div align="left"><select name="modifType" id="modifType" style="font-size:12px"><option value="+">+ (add)</option><option value="-">- (substract)</option></select></div></td>
+  </tr>
+  <tr>
+    <td colspan="2"><div align="center"><input type="button" name="applyPriceModif" id="applyPriceModif" value="Apply Price Modifications" style="width:auto" /></div></td>
+  </tr>
+  </tbody>
+</table>
+<br />
+<table width="500" cellspacing="0" border="0" style="margin: auto;" class="tblStyle2">
+    <thead>
+      <tr>
+        <th width="170">Item</th>
+        <th width="110">Price w/o Dealer</th>
+        <th width="110">Price w/ Dealer</th>
+        <th width="110">Extra Hour Price</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php if (empty($this->items)): ?>
+    <tr><td colspan="4" style="text-align:center">No inventory added for the market. There was some internal error.</td></tr>
+    <?php else:
+    	foreach ($this->items as $item) {
+        	?>
+        	<tr>
+            <td><?php echo $item['name']; ?></td>
+            <td style="text-align:center">$ <input type="text" class="pricesBox" name="info[<?php echo $item['pr_id']; ?>][price]" style="width:50px; text-align:center;" value="<?php echo (!empty($item['price'])) ? $item['price'] : '0'; ?>" /></td>
+            <td style="text-align:center">$ <input type="text" class="pricesBox" name="info[<?php echo $item['pr_id']; ?>][price_dealer]" style="width:50px; text-align:center;" value="<?php echo (!empty($item['price_dealer'])) ? $item['price_dealer'] : '0'; ?>" /></td>
+            <td style="text-align:center">$ <input type="text" class="pricesBox" name="info[<?php echo $item['pr_id']; ?>][extra_hour_price]" style="width:50px; text-align:center;" value="<?php echo (!empty($item['extra_hour_price'])) ? $item['extra_hour_price'] : '0'; ?>" /></td>
+            </tr>
+            <?php
+        }
+    ?>
+    <?php endif; ?>
+    </tbody>
+    <tfoot>
+    	<tr><th colspan="4" style="text-align:center" scope="row">
+    		<input type="hidden" name="id" value="<?php echo $this->marketId; ?>" />
+    		<input type="submit" value="Save Prices" name="savePrices" id="savePrices" style="text-align:center; font-size:12px; width:auto; "  />
+    	</th></tr>
+    </tfoot>
+  </table>
+  
+  </form>
+</div>

@@ -1,0 +1,108 @@
+
+
+.tblBack1 {
+background-color: #0086C6; color:#FFFFFF; font: 85% "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", sans-serif;
+}
+.tblBack2 {
+background-color: #E6E9EE; color:#333; font: 85% "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", sans-serif;
+}
+.txtStyle1 {
+padding-left:10px
+}
+.style2 {color: #000099}
+.tblTd {
+padding-left:10px;
+border:solid;
+border-color: #999999
+}
+
+.tblTd2 {
+border:solid;
+border-color: #999999;
+text-indent: 0px;
+}
+
+/* Tables style */
+.tblStyle1 {
+	font: 85% "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", sans-serif;
+	padding: 0;
+	margin: 0;
+	border-collapse: collapse;
+	color: #333;
+	background-color: #E6E9EE;
+}
+.tblStyle1 a {
+	color: #0066cc;
+	text-decoration: none;
+	border-bottom: 1px solid #0066cc;
+}  
+.tblStyle1 a:visited {color: #0066cc; border-bottom: 1px solid #0066cc;}
+.tblStyle1 a:hover {color: #000; border-bottom: 1px solid #000}  
+.tblStyle1 caption {
+	text-align: center;
+	text-transform: uppercase;
+	padding-bottom: 10px;
+	font: 150% "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", sans-serif;
+}
+.tblStyle1 thead th {
+	background-color: #2f7346;
+	padding: 7px 10px;
+	color: #fff;
+	text-align: center;
+	font-weight: bold;
+}
+
+.tblStyle1 thead th a { color: #FFF; border-bottom: 1px solid #FFF;}
+.tblStyle1 tbody, .tblStyle1 thead {border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC;}
+.tblStyle1 tbody {border-bottom: 1px solid #CCCCCC;}
+.tblStyle1 tbody td, .tblStyle1 tbody th {padding: 7px; background: url("../images/td_back.gif") repeat-x; text-align: center;}
+.tblStyle1 tbody tr {background: #E6E9EE;}
+.tblStyle1 tbody tr:hover {background: #CCCCCC; color: #111;}
+
+
+/* Tables style  2*/
+.tblStyle2 {
+	padding: 0;
+	margin: 0;
+	border-collapse: collapse;
+	color: #333;
+	background-color: #E6E9EE;
+}
+.tblStyle2 a {
+	color: #0066cc;
+	text-decoration: none;
+	border-bottom: 1px solid #0066cc;
+}  
+.tblStyle2 a:visited {color: #0066cc; border-bottom: 1px solid #0066cc;}
+.tblStyle2 a:hover {color: #000; border-bottom: 1px solid #000}  
+.tblStyle2 caption {
+	text-align: center;
+	text-transform: uppercase;
+	padding-bottom: 10px;
+	font: 150% "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", sans-serif;
+}
+.tblStyle2 thead th {
+	background-color: #2f7346;
+	padding: 7px 10px;
+	color: #fff;
+	text-align: left;
+	font-weight: bold;
+}
+.tblStyle2 tfoot th {
+	background-color: #2f7346;
+	padding: 7px 10px;
+	color: #fff;
+	text-align: left;
+	font-weight: bold;
+}
+.tblStyle2 thead th a { color: #FFF; border-bottom: 1px solid #FFF;}
+.tblStyle2 thead th a:visited { color: #FFF; border-bottom: 1px solid #FFF;}
+.tblStyle2 thead th a:hover { color: #FFF; border-bottom: 1px solid #FFF;}
+.tblStyle2 tbody, .tblStyle2 thead {border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC;}
+.tblStyle2 tbody {border-bottom: 1px solid #CCCCCC;}
+.tblStyle2 tbody td, .tblStyle2 tbody th {padding: 7px; text-align: left;}
+.tblStyle2 tbody th {
+	background-color: #2f7346; color:#fff;/*background-color: #B5BDCC;*/
+}
+
+.tblStyle2 tbody tr {background: #E6E9EE;}

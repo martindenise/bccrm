@@ -1,0 +1,37 @@
+<div id="addNewLeadContainer">
+<table width="250" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+<caption>Sales Rank</caption>
+  <thead>
+  <tr>
+    <th width="125"><div align="center">
+      <?= $this->searchBy; ?>
+    </div></th>
+    <th width="125"><div align="center">
+      <?= $this->rankBy; ?>
+    </div></th>
+  </tr>
+  </thead>
+  <tbody>
+  <?php
+  if (!count($this->ranksData)) {
+	  echo '
+		  <tr>
+		    <td colspan="2"><div align="center">No results</div></td>
+		  </tr>
+	  ';
+  }
+  else {
+  	foreach ($this->ranksData as $row) {
+  		echo '
+  		  <tr>
+		    <th><div align="center"><strong>'.$row['name'].'</strong></div></th>
+		    <td><div align="center">'.$row['value'].'</div></td>
+		  </tr>
+		 ';
+  	}
+  }
+  ?>
+  </tbody>
+</table>
+</div>
+<?= $this->noteDiv('Sales rank is based on the sum of the total amount of each student who enrolled in that period at that market/by that representative.'); ?>

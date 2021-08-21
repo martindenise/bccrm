@@ -1,0 +1,69 @@
+<!-- category menu -->
+<?= $this->categoryMenu('/views/scripts/markets/markets_menu.phtml'); ?>
+
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>
+
+<div id="addNewLeadContainer">
+<link href="<?= SITE_ROOT.'/css/calendar.css' ?>" media="screen" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?= SITE_ROOT.'/js/calendar.js' ?>"></script>
+<form name="addLead" action="<?= $this->url(array('controller'=>'markets','action'=>'add-blackout-date'),'default',true); ?>" method="post">
+<table width="350" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th colspan="2">Black Out Date Range</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td width="150"><div align="right">Start Date </div></td>
+    <td width="200">
+      <div align="left">
+        <input type="text" name="date_start" id="date_start" style="width:80px; text-align:center" readonly="readonly" value="<?php echo date('Y-m-d'); ?>" />
+        
+        <script type="text/javascript">
+        var cal1 = Calendar.setup({
+				inputField     :    "date_start",
+				ifFormat       :    "%Y-%m-%d",
+				singleClick    :    true,
+				step           :    1,
+				onUpdate	   :    function (cal) {
+										var date = cal.date;
+										  $("#date_end").val(date.print("%Y-%m-%d"));
+									}
+	        });
+
+   		</script>
+      </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">End Date</div></td>
+    <td><div align="left">
+      <input type="text" name="date_end" id="date_end" style="width:80px; text-align:center" readonly="readonly" value="<?php echo date('Y-m-d'); ?>" />
+       <script type="text/javascript">
+        var cal1 = Calendar.setup({
+				inputField     :    "date_end",
+				ifFormat       :    "%Y-%m-%d",
+				singleClick    :    true,
+				step           :    1
+	        });
+
+   		</script>
+    </div></td>
+  </tr>
+  <tr>
+    <td colspan="2" style="text-align:center; font-size:10px;">If it's a one day black out, leave the second box unchanged.</td>
+  </tr>
+  <tr>
+    <td colspan="2"><div align="center">
+    <input type="hidden" name="id" value="<?php echo $this->marketId; ?>" />
+    		<input type="submit" value="Submit" name="blackoutDate" id="blackoutDate" style="text-align:center;"  />
+    </div></td>
+  </tr>
+  </tbody>
+</table>
+  </form>
+</div>

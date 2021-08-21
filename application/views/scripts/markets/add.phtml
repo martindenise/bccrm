@@ -1,0 +1,90 @@
+<?php
+
+echo $this->categoryMenu('/views/scripts/markets/markets_menu_simple.phtml');
+
+if ($this->errors) {
+	echo $this->errorDiv($this->errors);
+}
+
+?>
+
+<div id="addNewLeadContainer">
+<form name="addLead" action="<?= $this->url(array('controller'=>'markets','action'=>'add'),'default',true); ?>" method="post">
+<table width="350" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th colspan="2">Add Market</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td width="150"><div align="right">Name</div></td>
+    <td width="200">
+      <div align="left">
+        <input type="text" name="name" id="name" style="margin:0;" value="<?= (!empty($this->marketData['name']) ? $this->marketData['name'] : '') ?>" />
+      </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Contact Name</div></td>
+    <td><div align="left">
+      <input type="text" name="contact_name" id="contact_name" style="margin:0;" value="<?= (!empty($this->marketData['contact_name']) ? $this->marketData['contact_name'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Email Address</div></td>
+    <td><div align="left">
+        <input type="text" name="email" id="email" style="margin:0;" value="<?= (!empty($this->marketData['email']) ? $this->marketData['email'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Phone</div></td>
+    <td><div align="left">
+      <input type="text" name="phone" id="phone" style="margin:0;" value="<?= (!empty($this->marketData['phone']) ? $this->marketData['phone'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Address</div></td>
+    <td><div align="left">
+      <input type="text" name="address" id="address" style="margin:0;" value="<?= (!empty($this->marketData['address']) ? $this->marketData['address'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">City</div></td>
+    <td><div align="left">
+      <input type="text" name="city" id="city" style="margin:0;" value="<?= (!empty($this->marketData['city']) ? $this->marketData['city'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">State</div></td>
+    <td><div align="left">
+      <input type="text" name="state" id="state" style="margin:0;" value="<?= (!empty($this->marketData['state']) ? $this->marketData['state'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">ZIP</div></td>
+    <td><div align="left">
+      <input type="text" name="zip" id="zip" style="margin:0;" value="<?= (!empty($this->marketData['zip']) ? $this->marketData['zip'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Paid in full discount</div></td>
+    <td><div align="left">
+      <input type="text" name="full_pay_discount" id="full_pay_discount" style="margin:0; width:25px; text-align:right" value="<?= (!empty($this->marketData['full_pay_discount']) ? $this->marketData['full_pay_discount'] : '0') ?>" />%
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Sales Tax</div></td>
+    <td><div align="left">
+      <input type="text" name="sales_tax" id="sales_tax" style="margin:0; width:25px; text-align:right" value="<?= (!empty($this->marketData['sales_tax']) ? $this->marketData['sales_tax'] : '0') ?>" />%
+    </div></td>
+  </tr>
+
+    <td colspan="2"><div align="center">
+      <input type="hidden" name="campusId" value="<?= (!empty($this->marketData['id']) ? $this->marketData['id'] : '') ?>" />
+      <input type="submit" name="button" id="button" value="Save" style="text-align:center; width:auto" />
+    </div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+</div>

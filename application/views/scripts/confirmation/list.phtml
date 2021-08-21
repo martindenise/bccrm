@@ -1,0 +1,25 @@
+<!-- category menu -->
+<?= $this->categoryMenu('/views/scripts/confirmation/confirmation_menu.phtml'); ?>
+
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>
+
+<!-- output the leads table -->
+<?= $this->table($this->tableData,$this->tableConfig); ?>
+
+<!-- results per page links -->
+<?= $this->perPageMenu($this->baseLink,$this->perPageLinksClass); ?>
+
+<br>
+<br>
+<!-- pagination -->
+<?= $this->pagination($this->paginationConfig) ?>
+
+Legend: <br />
+<img src="<?= SITE_ROOT ?>/images/icons/bulb_small.png" style="border:0" /> - put your mouse over the bulb to see the reason for removal <br />
+<img src="<?= SITE_ROOT ?>/images/icons/profile_small.png" style="border:0" /> - go to user profile <br />
+<img src="<?= SITE_ROOT ?>/images/icons/ok_small.png" style="border:0" /> - confirm an action <br />
+<img src="<?= SITE_ROOT ?>/images/icons/cancel_small.png" style="border:0" /> - cancel a request confirmation <br />

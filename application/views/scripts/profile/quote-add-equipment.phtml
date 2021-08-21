@@ -1,0 +1,199 @@
+<?php
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT" );
+header("Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . "GMT" );
+header("Cache-Control: no-cache, must-revalidate" );
+header("Pragma: no-cache" );
+
+?>
+<script type="text/javascript">
+var quoteId = "<?php echo $this->quoteId; ?>";
+$(document).ready(function() {
+	$("#eq_type").change(function() {
+		$("#tableType").hide();
+		$("#serviceType").hide();
+		val = $(this).val();
+		if (val) {
+			$("#" + val + "Type").show();
+		}
+	});
+		
+	$("#addTable").click(function() {
+		showLoading();
+		params = 'type=table&id=' + $("#table_id").val() + '&w_dealer=' + $("input[name=w_dealer]:checked").val()
+				+ '&quantity=' + $("#quantityt").val() + '&quoteId=' + quoteId + '&pricet=' + $("#pricet").val()
+				+ '&extra_hour_price=' + $("#extra_hour_pricet").val();
+		$.ajax({
+			cache: false,
+			dataType: 'plain',
+			type: 'POST',
+			data: params,
+			url: "<?= $this->url(array('controller'=>'profile','action'=>'quote-add-equipment'),'default',true); ?>",
+			success: function(data, textStatus, reqObj) {
+				if (data != 'OK') {
+					alert(data);
+				}
+				refreshEquipments(true);
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(textStatus + ': ' + errorThrown);
+				refreshEquipments(true);
+			}
+		});
+	});
+	
+	$("#addService").click(function() {
+		showLoading();
+		params = 'type=service&id=' + $("#service_id").val() + '&quantity=' + $("#quantitys").val()
+				+ '&hours=' + $("#hourss").val() + '&quoteId=' + quoteId + '&prices=' + $("#prices").val();
+		$.ajax({
+			cache: false,
+			dataType: 'plain',
+			type: 'POST',
+			data: params,
+			url: "<?= $this->url(array('controller'=>'profile','action'=>'quote-add-equipment'),'default',true); ?>",
+			success: function(data, textStatus, reqObj) {
+				if (data != 'OK') {
+					alert(data);
+				}
+				refreshEquipments(true);
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(textStatus + ': ' + errorThrown);
+				refreshEquipments(true);
+			}
+		});
+	});
+
+	$("#table_id").change(function() {
+		refreshPrices($(this).val(), 'table');
+	});
+	$("input[name=w_dealer]").change(function() {
+		refreshPrices($("#table_id").val(), 'table');
+	});
+	
+	$("#service_id").change(function() {
+		refreshPrices($(this).val(), 'service');
+	});
+
+	refreshPrices($("#table_id").val(), 'table');
+	refreshPrices($("#service_id").val(), 'service');
+});
+
+function refreshPrices(eqId, type) {
+	// get prices for equipment
+	params = '&id=' + eqId + '&quoteId=' + quoteId;
+	if ('table' == type) {
+		 params += '&w_dealer=' + $("input[name=w_dealer]:checked").val();
+	}
+	$.ajax({
+		cache: false,
+		dataType: 'json',
+		type: 'POST',
+		data: params,
+		url: "<?= $this->url(array('controller'=>'profile','action'=>'get-equipment-price'),'default',true); ?>",
+		success: function(data, textStatus, reqObj) {
+			if (data[0] == 'fail') {
+				alert(data[1]);
+			} else {
+				if (type == 'table') {
+					$("#pricet").val(data[0]);
+					$("#extra_hour_pricet").val(data[1]);
+				} else {
+					$("#prices").val(data[0]);
+				}
+			}
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			alert(textStatus + ': ' + errorThrown);
+		}
+	});
+}
+
+</script>
+<table width="100%" border="0" cellspacing="5" cellpadding="5" class="cellPadding" style="font-size:12px;">
+    	<caption style="font-size:14px; font-weight:bold; margin-bottom:15px;">Add Inventory Item</caption>
+    	<tr>
+        	<td width="50%" style="text-align:right">Equipment type</td>
+            <td width="50%" style="text-align:left">
+                <select name="eq_type" id="eq_type" style="font-size:12px;width:80px">
+                	<option value="">(choose)</option>
+                	<option value="table">Table</option>
+                    <option value="service">Service</option>
+                </select>
+            </td>
+        </tr>
+        <tr id="tableType" style="display:none">
+        	<td colspan="2">
+            	<table width="100%" class="cellPadding">
+                	<tr>
+                        <td width="50%" style="text-align:right">Table Name</td>
+                        <td width="50%" style="text-align:left">
+                        	<?php echo $this->formSelect('table_id', null, array('style' => 'font-size:12px;width:170px;'), $this->tables); ?>
+                        </td>
+                    </tr>
+                	<tr>
+                    	<td width="50%" style="text-align:right">With Dealer</td>
+                        <td width="50%" style="text-align:left">
+							<input type="radio" name="w_dealer" id="w_dealeryt" value="yes" style="width:auto" checked="checked"/> Yes &nbsp;&nbsp;
+							<input type="radio" name="w_dealer" id="w_dealernt" value="no" style="width:auto" /> No &nbsp;&nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td width="50%" style="text-align:right">Quantity</td>
+                        <td width="50%" style="text-align:left">
+							<input type="text" name="quantity" id="quantityt" style="font-size:12px; width:60px; text-align:center;" />
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td width="40%" style="text-align:right">Price</td>
+                        <td width="60%" style="text-align:left">
+							$ <input type="text" name="pricet" id="pricet" style="font-size:12px; width:50px; text-align:center;" />
+                        </td>
+                    </tr>
+                    <tr style="display: none">
+			<td width="40%" style="text-align:right">Extra Hour Price</td>
+			<td width="60%" style="text-align:left">
+
+			$ <input type="text" name="extra_hour_price" id="extra_hour_pricet" style="font-size:12px; width:50px; text-align:center;" />
+			</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="2" style="text-align:center"><input type="button" value="Add Item" name="addTable" id="addTable" style="text-align:center"  /></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr id="serviceType" style="display:none">
+        	<td colspan="2">
+            	<table width="100%" class="cellPadding">
+            		<tr>
+                        <td width="40%" style="text-align:right">Service Name</td>
+                        <td width="60%" style="text-align:left">
+                        	<?php echo $this->formSelect('service_id', null, array('style' => 'font-size:12px;width:170px;'), $this->services); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td width="40%" style="text-align:right">Quantity</td>
+                        <td width="60%" style="text-align:left">
+							<input type="text" name="quantity" id="quantitys" style="font-size:12px; width:60px; text-align:center;" />
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td width="40%" style="text-align:right">Number of hours</td>
+                        <td width="60%" style="text-align:left">
+							<input type="text" name="hours" id="hourss" style="font-size:12px; width:60px; text-align:center;" />
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td width="40%" style="text-align:right">Price / hour</td>
+                        <td width="60%" style="text-align:left">
+							$ <input type="text" name="prices" id="prices" style="font-size:12px; width:50px; text-align:center;" />
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td colspan="2" style="text-align:center"><input type="button" value="Add Item" name="addService" id="addService" style="text-align:center"  /></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>

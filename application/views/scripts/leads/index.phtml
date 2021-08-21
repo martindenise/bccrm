@@ -1,0 +1,36 @@
+<div id="balloontip_dialog" class="balloontip">
+<table cellspacing="0" cellpadding="0">
+	<tbody>
+    <tr>
+    <td class="balloontip_topleft"><img src="images/icons/pencil_big.png" alt="" name="balloontip_dialog_icon" border="0" id="balloontip_dialog_icon" /></td>
+    <td class="balloontip_content" id="balloontip_message">Reason: <input name="reason" type="text" id="reason" size="20" style="margin-right:10px"> <a id="goRemove" href="#" />Remove</a></td>
+    <td class="balloontip_topright"></td>
+    </tr>
+    <tr>
+    <td class="balloontip_bottomleft"></td>
+    <td class="balloontip_bottommiddle"></td>
+    <td class="balloontip_bottomright"></td>
+    </tr>
+    </tbody>
+</table>
+<div class="balloontip_arrow top" id="balloontip_dialog_arrow" style="left: 190px;"></div><div id="balloontip_dialog_close" class="close_button close_button_down" onclick="hideDeleteReason()"></div>
+</div>
+<!-- category menu -->
+<?= $this->categoryMenu('/views/scripts/leads/leads_menu.phtml'); ?>
+
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>
+
+<!-- output the leads table -->
+<?= $this->table($this->tableData,$this->tableConfig); ?>
+
+<!-- results per page links -->
+<?= $this->perPageMenu($this->baseLink,$this->perPageLinksClass); ?>
+
+<br>
+<br>
+<!-- pagination -->
+<?= $this->pagination($this->paginationConfig) ?>

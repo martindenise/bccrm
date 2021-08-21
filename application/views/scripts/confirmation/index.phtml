@@ -1,0 +1,8 @@
+<!-- category menu -->
+<?= $this->categoryMenu('/views/scripts/confirmation/confirmation_menu.phtml'); ?>
+
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>

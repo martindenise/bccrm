@@ -1,0 +1,216 @@
+<?= $this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>San Francisco Casino Party CRM</title>
+
+<?php
+	$this->headLink()->appendStylesheet(SITE_ROOT.'/css/styles.css');
+	$this->headLink()->appendStylesheet(SITE_ROOT.'/css/tables.css');
+    $this->headLink()->appendStylesheet(SITE_ROOT.'/css/ballons.css');
+	$this->headScript()->appendFile(SITE_ROOT.'/js/jquery.js', $type = 'text/javascript', $attrs = array());
+	$this->headScript()->appendFile(SITE_ROOT.'/js/js_stuff.js', $type = 'text/javascript', $attrs = array());
+
+	echo $this->headLink();
+	echo $this->headScript();
+?>
+
+<script language="javascript">
+$(document).ready(setDate);
+
+$(document).ready(function(){
+    $("#actions_confirm").click(function () {
+      if ($("#sub1").css("display") == 'block')
+		$("#sub1").slideUp();
+	  else
+	  	$("#sub1").slideDown();
+    });
+    $("#admin").click(function () {
+      if ($("#sub2").css("display") == 'block')
+		$("#sub2").slideUp();
+	  else
+	  	$("#sub2").slideDown();
+    });
+	$("#stats").click(function () {
+      if ($("#sub3").css("display") == 'block')
+		$("#sub3").slideUp();
+	  else
+	  	$("#sub3").slideDown();
+    });
+  });
+
+
+</script>
+</head>
+
+<body>
+
+	<div class="right-bgd"></div>
+
+    	<!--header-->
+        <div class="main">
+
+            <div id="header">
+            	<div class="logo">
+                	<h1>San Francisco Casino Party CRM</h1>
+                    <div style="margin-left:-232px; margin-top: 47px; float:left">San Francisco Casino Party</div>
+                </div>
+            	<div class="row1">
+                <div class="date_time">
+                Today is <span id="today"></span><br />
+				Time is <span id="time"></span>                </div>
+<div class="search">
+<form style="margin: 0pt; padding: 0pt;" action="<?= $this->url(array('controller'=>'search','action'=>'results'),'default',true) ?>" id="searchForm" method="get">
+<input type="text" id="student_name" name="student_name" value="Search client" class="searching" onFocus="if (this.value=='Search client') this.value=''" onBlur="setDefaultValue(this,'Search client')" />
+<input type="image" name="submit" value="submit" src="<?= SITE_ROOT."/images/search.gif" ?>" class="submit"/>
+<input type="hidden" name="button" value="search">
+</form>
+                  </div>
+                </div>
+            </div>
+
+        <!--header end-->
+        <!--content -->
+            <div class="content">
+                <div class="clear-block">
+
+<div class="side-bar-left">
+    <div class="ind">
+<?php
+
+// if user is admin, show the admin panel
+// checks are made too on each controller which is only for admin
+$userIsAdmin = Zend_Auth::getInstance()->getStorage()->read()->admin;
+if ($userIsAdmin) {
+
+?>
+<div class="widget" id="submenu">
+        	<div class="bg-h">
+                <div class="bg-hl">
+
+                    <div class="bg-hr">
+                        <h2>Admin</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="border-top">
+                <div class="corner-top-left">
+                    <div class="corner-top-right">
+
+                     <div class="inside-widget">
+					        <ul>
+                            		<li class="cat-item"><a href="<?= $this->url(array('controller'=>'index'),'default',true) ?>">Dashboard</a></li>
+                                    <li class="cat-item"><a id="actions_confirm" href="#">Actions awaiting confirm.</a>
+										<ul id="sub1" style="padding: 0 10px 10px 20px; margin:0;list-style-image:url(images/arrow_12.gif); display:none;">
+											<li style="font-size:12px; background:none; line-height:17px;"><a href="<?= $this->url(array('controller'=>'confirmation', 'action'=>'list'),'default',true) ?>/leads">Leads</a></li>
+											<li style="font-size:12px; background:none; line-height:17px;"><a href="<?= $this->url(array('controller'=>'confirmation', 'action'=>'list'),'default',true) ?>/booked">Bookings</a></li>
+										</ul>
+									</li>
+                                    <li class="cat-item"><a id="admin" href="#">Admin</a>
+										<ul id="sub2" style="padding: 0 10px 10px 20px; margin:0;list-style-image:url(images/arrow_12.gif); display:none;">
+											<li style="font-size:12px; background:none; line-height:17px;"><a href="<?= $this->url(array('controller'=>'users'),'default',true) ?>">Users</a></li>
+											<li style="font-size:12px; background:none; line-height:17px;"><a href="<?= $this->url(array('controller'=>'emails'),'default',true) ?>">Stock Emails</a></li>
+											<li style="font-size:12px; background:none; line-height:17px;"><a href="<?= $this->url(array('controller'=>'emails', 'action' => 'initial'),'default',true) ?>">Initial Emails</a></li>
+										</ul>
+									</li>
+									<li class="cat-item"><a href="<?= $this->url(array('controller'=>'markets'),'default',true) ?>">Markets</a></li>
+									<li class="cat-item"><a href="<?= $this->url(array('controller'=>'inventory'),'default',true) ?>">Tables & Services</a></li>
+                       </ul>
+   					</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<br />
+<?php
+}
+?>
+        <div class="widget" id="submenu">
+            <div class="bg-h">
+                <div class="bg-hl">
+                    <div class="bg-hr">
+                        <h2>Clients Management</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="border-top">
+                <div class="corner-top-left">
+                    <div class="corner-top-right">
+                        <div class="inside-widget">
+                            <ul>
+                            		<li class="cat-item"><a href="<?= $this->url(array('controller'=>'newleads'),'default',true) ?>">New Contacts</a></li>
+                                    <li class="cat-item"><a href="<?= $this->url(array('controller'=>'leads'),'default',true) ?>">Leads</a></li>
+                                    <li class="cat-item"><a href="<?= $this->url(array('controller'=>'booked'),'default',true) ?>">Bookings</a></li>
+                                    <li class="cat-item"><a href="<?= $this->url(array('controller'=>'search'),'default',true) ?>">Client search</a></li>
+                            </ul>
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+<br />
+<div class="widget" id="submenu">
+            <div class="bg-h">
+
+                <div class="bg-hl">
+                    <div class="bg-hr">
+                        <h2>Miscellaneous</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="border-top">
+                <div class="corner-top-left">
+
+                    <div class="corner-top-right">
+                        <div class="inside-widget">
+                            <ul>
+                            		<li class="cat-item"><a href="<?= $this->url(array('controller'=>'index'),'default',true) ?>">Home</a></li>
+                                    <li class="cat-item"><a href="<?= $this->url(array('controller'=>'newsletter'),'default',true) ?>">Newsletter</a></li>
+                                     <li class="cat-item"><a href="<?= $this->url(array('controller'=>'auth', 'action'=>'logout'),'default',true) ?>">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<br />
+<br />
+    </div>
+</div><div class="column-center">
+    <div class="indent-center">
+		        	<div class="border-top2">
+                <div class="corner-top-left2">
+
+                    <div class="corner-top-right2">
+
+        	<div id="center-content">
+
+				<?= $this->layout()->content ?>
+            </div>
+            		</div>
+            	</div>
+            </div>
+    </div>
+</div>
+
+
+<br /><br />
+                </div>
+            </div>
+
+            <!--content end-->
+            <div class="push"></div>
+        </div>
+        <!--footer-->
+        <div id="footer">
+            <div class="foot">
+            	<div class="bg-foot">Copyright &copy; <?php echo date('Y'); ?> San Francisco Casino Party</div>
+          </div>
+        </div>
+
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<div id="addNewLeadContainer">
+<table width="350" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+<caption>Rank by <?= $this->rankBy; ?> / <?= $this->searchBy; ?></caption>
+  <thead>
+  <tr>
+    <th width="150"><div align="center">
+      <?= $this->searchBy; ?>
+    </div></th>
+    <th width="100"><div align="center">
+      <?= $this->fromDate; ?>
+      to <br />
+      <?= $this->toDate; ?>
+    </div></th>
+    <th width="100"><div align="center">
+      <?= $this->fromDate2; ?>
+      to <br />
+  <?= $this->toDate2; ?>
+    </div></th>
+  </tr>
+  </thead>
+  <tbody>
+  <?php
+  if (!count($this->ranksData)) {
+	  echo '
+		  <tr>
+		    <td colspan="3"><div align="center">No results</div></td>
+		  </tr>
+	  ';
+  }
+  else {
+  	foreach ($this->ranksData as $row) {
+  		echo '
+  		  <tr>
+		    <th><div align="center"><strong>'.$row['name'].'</strong></div></th>
+		    <td><div align="center">'.$row['value'].'</div></td>';
+
+  		// check to see if the record existed in the past and display the proper evolution icon
+  		$found = 0;
+  		foreach ($this->ranksDataPrev as $rowPrev) {
+  			if ($rowPrev['name'] == $row['name']) {
+  				echo '<td><div align="center">'.$rowPrev['value'];
+  				// display the proper icon
+  				if ($rowPrev['value'] > $row['value'])
+  					echo '<img src="'.SITE_ROOT.'/images/icons/red_down.png'.'" style="margin-left: 7px;" width="10" height="11">';
+  				elseif ($rowPrev['value'] < $row['value'])
+  				    echo '<img src="'.SITE_ROOT.'/images/icons/green_up.png'.'" style="margin-left: 7px;" width="10" height="11">';
+
+  				echo '</div></td>';
+
+  				$found = 1;
+  				break;
+  			}
+  		}
+  		if (!$found) {
+  			echo '<td><div align="center">N/A</div></td>';
+  		}
+
+  		echo '
+		  </tr>';
+  	}
+  }
+  ?>
+
+  </tbody>
+</table>
+</div>
+<?= $this->noteDiv('
+The first period column indicates the values for the period you selected. <br />
+The second period column indicates the values for the period you selected as &quot;previous period&quot;<br />
+The arrows that appear in the second period column are reflecting how the value in the first period  changed from when it had the value in the &quot;previous period&quot;');

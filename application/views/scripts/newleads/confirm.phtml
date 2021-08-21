@@ -1,0 +1,52 @@
+<!-- category menu -->
+<?= $this->categoryMenu('/views/scripts/newleads/newleads_menu.phtml'); ?>
+
+<?php
+
+if ($this->errors) {
+	echo $this->errorDiv($this->errors);
+}
+
+?>
+
+<div id="addNewLeadContainer">
+
+<form name="confirmNewLead" action="<?= $this->url(array('controller'=>'newleads','action'=>'confirm'),'default',true); ?>" method="post">
+<table width="300" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th colspan="2">Confirm New Contact</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td width="150"><div align="right">First Name</div></td>
+    <td width="150">
+      <div align="left">
+        <?= $this->formText('first_name',$this->leadData['first_name']); ?>
+      </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Last Name</div></td>
+    <td><div align="left">
+        <?= $this->formText('last_name',$this->leadData['last_name']); ?>
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Coordinator</div></td>
+    <td><label for="sales_person_id"></label>
+        <div align="left">
+		<!-- sales persons select menu -->
+		<?= $this->formSelect('sales_person_id',$this->selected_sales_person,array('style' => 'font-size:11px'),$this->sales_persons); ?>
+        </div></td>
+  </tr>
+  <tr>
+    <td colspan="2"><div align="center">
+      <input type="submit" name="button" id="button" value="Confirm New Contact &gt;&gt;" style="text-align:center; width:auto" />
+      <?= $this->formHidden('id',$this->leadData['id']); ?>
+    </div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+</div>

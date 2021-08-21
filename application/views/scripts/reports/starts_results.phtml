@@ -1,0 +1,27 @@
+<script type="text/javascript">
+function PrintWindow(url)
+    {
+        var WindowObject = window.open(url, "print",
+                              "width=100,height=100,top=250,left=345,toolbars=no,scrollbars=no,status=no,resizable=no");
+        WindowObject.focus();
+        //WindowObject.print();
+        setTimeout(function(){WindowObject.close();},3000);
+	}
+</script>
+<table width="50%" border="0" style="margin: 0 20px 0 30px; line-height:20px;">
+  <tr>
+    <td style="text-align:left"><img src="<?= SITE_ROOT; ?>/images/icons/export_small.png" width="10" height="10" /> <a href="<?= SITE_ROOT; ?>/reports/exportstarts/?type=pdf&sqlWhere=<?= $this->printSql; ?>">Export as PDF</a></td>
+    <td style="text-align:left"><img src="<?= SITE_ROOT; ?>/images/icons/print.png" width="10" height="10" /> <a href="javascript:PrintWindow('<?= SITE_ROOT; ?>/reports/exportstarts/?type=print&sqlWhere=<?= $this->printSql; ?>')">Print</a> *</td>
+  </tr>
+  <tr>
+     <td style="text-align:left"><img src="<?= SITE_ROOT; ?>/images/icons/export_small.png" width="10" height="10" /> <a href="<?= SITE_ROOT; ?>/reports/leadsheets/?type=D&sqlWhere=<?= $this->printSql; ?>">Export quotes as PDF</td>
+    <td style="text-align:left"><img src="<?= SITE_ROOT; ?>/images/icons/leadsheet.png" width="10" height="10" /> <a href="<?= SITE_ROOT; ?>/reports/leadsheets/?type=I&sqlWhere=<?= $this->printSql; ?>" target="_blank">Print quotes</td>
+  </tr>
+</table>
+<br />
+<!-- output the enrollments table -->
+<?= $this->table($this->results,$this->tableConfig); ?>
+<br />
+<br />
+<?= $this->noteDiv('* If you choose to print the results, a new window will open and you will be prompted to print the page. <br />
+Choose "Landscape" paper orientation from the printer menu for best results.'); ?>

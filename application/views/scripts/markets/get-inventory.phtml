@@ -1,0 +1,31 @@
+<?php
+
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT" );
+header("Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . "GMT" );
+header("Cache-Control: no-cache, must-revalidate" );
+header("Pragma: no-cache" );
+
+if (empty($this->inventory)):
+?>
+<tr><td colspan="7" style="text-align:center">No items in the market inventory.</td></tr>
+<?php
+else:
+	foreach($this->inventory as $row) {
+?>
+	<tr>
+		<td><?php echo $row['name']; ?> (<?php echo $row['type']; ?>)</td>
+		<td style="text-align: center">$<?php echo $row['price']; ?></td>
+		<td style="text-align: center">$<?php echo $row['price_dealer']; ?></td>
+		<td style="text-align: center">$<?php echo $row['extra_hour_price']; ?></td>
+		<!-- <td style="text-align: center"><?php echo $row['inventory_total']; ?></td>  -->
+		<td style="text-align: center">
+			<input type="text" name="inventory_total<?php echo $row['eq_id']; ?>" value="<?php echo $row['inventory_total']; ?>" style="width:40px; text-align:center" />
+			<img src="<?php echo SITE_ROOT; ?>/images/icons/save_small.png" alt="<?php echo $row['eq_id']; ?>" class="updateInventoryTotal" style="cursor:pointer;" />
+		</td>
+		<td style="text-align: center"><?php echo $row['inventory']; ?></td>
+		<td style="text-align: center"><a href="<?php echo $this->url(array('controller'=>'markets','action'=>'rem-inventory'),'default',true); ?>?id=<?php echo $row['eq_id']; ?>" class="rem-inventory">Remove</a></td>
+	</tr>
+<?php
+	}
+endif;
+?>

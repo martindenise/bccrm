@@ -1,0 +1,24 @@
+<!-- category menu -->
+<?= $this->categoryMenu('/views/scripts/markets/markets_menu_simple.phtml'); ?>
+
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>
+
+<!-- output the leads table -->
+<?= $this->table($this->tableData,$this->tableConfig); ?>
+
+<!-- results per page links -->
+<?= $this->perPageMenu($this->baseLink,$this->perPageLinksClass); ?>
+
+<br>
+<br>
+<!-- pagination -->
+<?= $this->pagination($this->paginationConfig) ?>
+
+<br /><br />
+Legend: <br />
+<img src="<?= SITE_ROOT ?>/images/icons/edit_small.png" style="border:0" /> - edit market information <br />
+<img src="<?= SITE_ROOT ?>/images/icons/delete_small.png" style="border:0" /> - delete the market <br />

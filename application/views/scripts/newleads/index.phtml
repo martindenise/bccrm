@@ -1,0 +1,24 @@
+<!-- category menu -->
+<?= $this->categoryMenu('/views/scripts/newleads/newleads_menu.phtml'); ?>
+
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>
+
+<!-- output the new leads table -->
+<?= $this->table($this->tableData,$this->tableConfig); ?>
+
+<!-- results per page links -->
+<?= $this->perPageMenu($this->baseLink,$this->perPageLinksClass); ?>
+
+<br>
+<br>
+<!-- pagination -->
+<?= $this->pagination($this->paginationConfig) ?>
+
+<div style="width:90%; margin:auto;margin-top:10px; text-align:left">
+	Legend: <br>
+	<img src="<?=SITE_ROOT;?>/images/icons/contact_small.png" style="border:0" alt="Send Stock Email" /> - Send stock email to new contact
+</div>

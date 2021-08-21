@@ -1,0 +1,105 @@
+<link href="<?= SITE_ROOT.'/css/calendar.css' ?>" media="screen" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?= SITE_ROOT.'/js/calendar.js' ?>"></script>
+
+<script language="javascript" type="text/javascript">
+$(document).ready(function() {
+	  $(".deleteQuote").click(function(mye) {
+		  result = confirm('Are you sure you want to delete this quote?');
+		  if (!result) {
+			 mye.preventDefault();
+		  }
+	  });
+});
+var url = '<?= $this->url(array("controller" => "profile", "action" => "contactpopup"),"default",true); ?>';
+var userType = '<?= $this->leadType; ?>';
+var userId = '<?= $this->leadId; ?>';
+function contactPopup(itemId) {
+	detailswindow = window.open(url + '?type=' + userType + '&id=' + userId + '&itemId=' + itemId,
+							'details_window',
+							"status = 0,toolbar = 0, location = 0, menubar = 0, directories = 0, resizeable = 1, scrollbars = 1, height=370, width=370"
+							);
+	detailswindow.moveTo(screen.width/2-185,screen.height/2-150);
+}
+
+function SetReminder() {
+	// form element
+	var reminderForm = document.createElement("FORM");
+	reminderForm.method = "POST";
+	reminderForm.action = "<?= $this->url(array('controller'=>'profile'),'default',true).'/?type='.$this->leadType.'&id='.$this->leadId; ?>";
+	reminderForm.style.margin = "0";
+	reminderForm.style.padding = "0";
+	
+	// date input element
+	var reminderDateField = document.createElement("INPUT");
+	reminderDateField.type = "text";
+	reminderDateField.name = "reminderDate";
+	reminderDateField.id = "reminderDate";
+	reminderDateField.style.width = "70px";
+	reminderDateField.style.textAlign = "center";
+	reminderDateField.readonly = "readonly";
+	
+	// submit button
+	var submitButton = document.createElement("INPUT");
+	submitButton.type = "submit";
+	submitButton.value = "save";
+	submitButton.style.fontSize = "10px";
+
+	
+	// calendar button image
+	var calendarImageButton = document.createElement("IMG");
+	calendarImageButton.src = '<?= SITE_ROOT."/images/icons/calendar.png" ?>';
+	calendarImageButton.name = "reminder_date_button";
+	calendarImageButton.width = "10";
+	calendarImageButton.height = "10";
+	calendarImageButton.id = "reminder_date_button";
+	calendarImageButton.style.cursor = "pointer";
+	calendarImageButton.style.marginLeft = "5px";
+
+
+	$("#reminderField").html('');
+	
+	reminderForm.appendChild(reminderDateField);
+	reminderForm.appendChild(calendarImageButton);
+	reminderForm.appendChild(submitButton);
+	
+	$("#reminderField").append(reminderForm);
+	
+        Calendar.setup({
+            inputField     :    "reminderDate",
+            ifFormat       :    "%m/%d/%Y",
+            button         :    "reminder_date_button",
+            singleClick    :    false,
+            step           :    1
+        });
+}
+</script>
+
+<div id="balloontip_dialog" class="balloontip">
+<table cellspacing="0" cellpadding="0">
+	<tbody>
+    <tr>
+    <td class="balloontip_topleft"><img src="images/icons/pencil_big.png" alt="" name="balloontip_dialog_icon" border="0" id="balloontip_dialog_icon" /></td>
+    <td class="balloontip_content" id="balloontip_message">Reason: <input name="reason" type="text" id="reason" size="20" style="margin-right:10px"> <a id="goRemove" href="#" />Remove</a></td>
+    <td class="balloontip_topright"></td>
+    </tr>
+    <tr>
+    <td class="balloontip_bottomleft"></td>
+    <td class="balloontip_bottommiddle"></td>
+    <td class="balloontip_bottomright"></td>
+    </tr>
+    </tbody>
+</table>
+<div class="balloontip_arrow top" id="balloontip_dialog_arrow" style="left: 190px;"></div><div id="balloontip_dialog_close" class="close_button close_button_down" onclick="hideDeleteReason()"></div>
+</div>
+
+<!-- category menu -->
+<?= $this->categoryMenu('/views/scripts/profile/profile_menu.phtml'); ?>
+
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>
+
+<!-- profile information tables -->
+<?= $this->profile($this->leadData,$this->leadType); ?>

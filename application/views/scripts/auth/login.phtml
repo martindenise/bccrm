@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>San Francisco Casino Party CRM</title>
+
+<?php echo $this->headLink()->appendStylesheet(SITE_ROOT.'/css/styles.css') ?>
+</head>
+
+<body style="background:#E5E5E5">
+<div class="widget" id="submenu" style="width:300px; margin:auto; margin-top:10%;">
+            <div class="bg-h">
+                <div class="bg-hl">
+                    <div class="bg-hr">
+                        <h2>Login</h2>
+
+                    </div>
+                </div>
+            </div>
+            <div class="border-top">
+                <div class="corner-top-left">
+                  <div class="corner-top-right">
+                        <div class="inside-widget" style="font-size:14px; margin:0; padding:20px 40px;">
+                        <form name="login" id="login" method="post" action="<?= $this->url(array('controller'=>'auth','action'=>'login'),'default',true) ?>">
+                          <table width="90%" border="0" cellspacing="0" style="border-spacing:10px;">
+                          <?php if ($this->errors) { ?>
+                            <tr>
+                              <td colspan="2"><div align="center">
+                                <?= $this->errors; ?>
+                              </div></td>
+                            </tr>
+                            <?php } ?>
+                            <tr>
+                              <td><div align="right">Username:</div></td>
+                              <td><div align="right">
+                                <input name="username" type="text" id="username" size="20" style="font-size:12px; width:110px;" />
+                              </div></td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                              <td><div align="right">Password:</div></td>
+                              <td><div align="right">
+                                <input name="password" type="password" id="password" size="20" style="font-size:12px; width:110px;" />
+                              </div></td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                              <td colspan="2"><div align="center">
+                                <input type="submit" name="submit" id="submit" value="Login" />
+                              </div></td>
+                            </tr>
+                          </table>
+                          </form>
+                          <br />
+                          <br /><br />
+<br />
+                          <div style="font-size:11px; text-align:center">Copyright &copy; <? echo date('Y'); ?> San Francisco Casino Party</div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        </div>
+</body>
+</html>

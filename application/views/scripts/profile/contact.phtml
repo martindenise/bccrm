@@ -1,0 +1,198 @@
+<script type="text/javascript">
+// Edit region stylesheet
+editstyle = '<?= SITE_ROOT."/js/wyzzstyles/editarea.css" ?>';
+wyzzStyle = '<?= SITE_ROOT."/js/wyzzstyles/wyzzstyle.css" ?>';
+iconsPath = '<?= SITE_ROOT."/js/wyzzicons/" ?>';
+editorWidth = 450;
+editorHeight = 200;
+</script>
+<script type="text/javascript" src="<?= SITE_ROOT.'/js/wyzz.js' ?>"></script>
+
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function loadEmail(selObj){
+  emailId = selObj.options[selObj.selectedIndex].value;
+  if (emailId) {
+    $.getJSON("<?= $this->url(array('controller'=>'profile','action'=>'loadstockemail'),'default',true); ?>", { id: emailId }, function(data){
+	 	$("#email_subject").val(data.subject);
+		
+		var doc = document.getElementById("wysiwygemail_body").contentWindow.document;
+		doc.body.innerHTML = data.body;
+	 	//$("#wysiwygemail_body").html(data.body);		
+	});
+  }
+}
+//-->
+</script>
+
+<div id="balloontip_dialog" class="balloontip">
+<table cellspacing="0" cellpadding="0">
+	<tbody>
+    <tr>
+    <td class="balloontip_topleft"><img src="images/icons/pencil_big.png" alt="" name="balloontip_dialog_icon" border="0" id="balloontip_dialog_icon" /></td>
+    <td class="balloontip_content" id="balloontip_message">Reason: <input name="reason" type="text" id="reason" size="20" style="margin-right:10px"> <a id="goRemove" href="#" />Remove</a></td>
+    <td class="balloontip_topright"></td>
+    </tr>
+    <tr>
+    <td class="balloontip_bottomleft"></td>
+    <td class="balloontip_bottommiddle"></td>
+    <td class="balloontip_bottomright"></td>
+    </tr>
+    </tbody>
+</table>
+<div class="balloontip_arrow top" id="balloontip_dialog_arrow" style="left: 190px;"></div><div id="balloontip_dialog_close" class="close_button close_button_down" onclick="hideDeleteReason()"></div>
+</div>
+
+<!-- category menu -->
+<?= $this->categoryMenu('/views/scripts/profile/profile_menu.phtml'); ?>
+
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>
+
+<div id="profileContainer">
+<form name="contact" action="<?= $this->url(array('controller'=>'profile','action'=>'contact'),'default',true).'/?type='.$this->leadType.'&id='.$this->leadId; ?>" method="post">
+<table width="500" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th colspan="3">Contact</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td width="200"><div align="right"><strong>Method</strong></div></td>
+    <td width="200"><div align="left">
+      <select name="ctype" id="ctype" style="font-size:11px; width:80px;" onchange="showHideContactMethod()">
+        <option value="none">(choose)</option>
+        <option value="Phone">Phone</option>
+        <option value="Email">Email</option>
+      </select>
+    </div></td>
+    </tr>
+  <tr>
+    <td colspan="3" align="center">
+      
+        <div align="left">
+          <table id="phoneMethod" width="98%" border="0" cellspacing="0" style="border:0; border-collapse:separate;display:none">
+              <tr>
+                <td width="50%"><div align="right"><strong>Type</strong></div></td>
+                <td width="50%"><div align="left">
+                  <input type="radio" name="phone_type" id="radio" value="Phone Call" onclick="showHidePhoneType('Phone')" style="margin:0" />
+                  Phone
+                  <input type="radio" name="phone_type" id="radio2" value="SMS" onclick="showHidePhoneType('SMS')" style="margin:0; margin-left: 10px" />
+                  SMS</div></td>
+              </tr>
+            <tr>
+              <td colspan="2"><div align="center">
+                <!-- phone call table -->
+                <table id="phoneCall" width="99%" border="0" style="border:0; border-collapse:separate;display:none">
+                      <tr>
+                        <td width="50%"><div align="right"><strong>Phone Number</strong></div></td>
+                        <td width="50%"><div align="left">
+                          <input name="phone_number" type="text" id="phone_number" size="20" style="margin:0" value="<?= $this->leadData['home_phone'] ?>" />
+                        </div></td>
+                      </tr>
+                  <tr>
+                        <td><div align="right"><strong>Attempt</strong></div></td>
+                        <td><div align="left">
+                              <input name="attempt" type="radio" id="radio3" value="Yes" style="margin:0" />
+                          Yes
+                          <input type="radio" name="attempt" id="radio4" value="No" checked="checked" style="margin:0; margin-left: 10px" />
+                          No</div></td>
+                      </tr>
+          
+                      <tr>
+                        <td><div align="right"><strong>Comments</strong></div></td>
+                        <td rowspan="2"><div align="left">
+                          <textarea name="attempt_comments" id="attempt_comments" cols="18" rows="4" style="margin:0"></textarea>
+                        </div></td>
+                      </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                      </tr>
+                  </table>
+                </div>
+                <table id="phoneSMS" width="99%" border="0" style="border:0; border-collapse:separate;display:none">
+                  <tr>
+                    <td width="50%"><div align="right"><strong>Mobile Number</strong></div></td>
+                    <td width="50%"><div align="left">
+                        <input name="mobile_number" type="text" id="mobile_number" size="20" style="margin:0" value="<?= $this->leadData['mobile_phone'] ?>" />
+                    </div></td>
+                  </tr>
+                  <tr>
+                    <td><div align="right"><strong>Message</strong></div></td>
+                    <td rowspan="2"><div align="left">
+                        <textarea name="sms_message" id="sms_message" cols="18" rows="5" style="margin:0" onKeyUp="updateChrsLeft()"></textarea>
+                        <br />
+                      <span id="sms_message_chrs_left">160 chrs. left</span></div></td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                  </tr>                 
+                </table></td>
+                </tr>
+            <tr>
+              <td colspan="2"><div align="center">
+                <!-- sms send table -->
+              </div></td>
+                </tr>
+              </table>
+          <table id="emailMethod" width="98%" border="0" cellspacing="0" style="border-collapse:separate;display:none">
+              <tr>
+                <td width="50%"><div align="right"><strong>Use template</strong></div></td>
+                <td width="50%"><div align="left">
+                  <?= $this->formSelect('id','0',array(
+												'style' => 'font-size:11px; width:150px; margin:0;',
+												'onchange' =>"loadEmail(this)"
+												),
+												$this->Emails); ?>
+                </div></td>
+              </tr>            
+              <tr>
+                <td width="50%"><div align="right"><strong>Sender Email Name</strong></div></td>
+                <td width="50%"><div align="left">
+                  <input type="text" size="35" name="email_sender_name" id="email_sender_name" style="margin:0" value="<?= $this->senderName ?>" />
+                </div></td>
+              </tr>          
+              <tr>
+                <td width="50%"><div align="right"><strong>Sender Email Address</strong></div></td>
+                <td width="50%"><div align="left">
+                  <input type="text" size="35" name="email_sender" id="email_sender" style="margin:0" value="<?= $this->senderAddress ?>" />
+                </div></td>
+              </tr>          
+              <tr>
+                <td width="50%"><div align="right"><strong>Recipient</strong></div></td>
+                <td width="50%"><div align="left">
+                  <input type="text" size="35" name="email_address" id="email_address" style="margin:0" value="<?= $this->leadData['first_name'] . ' ' . $this->leadData['last_name'] . ' <' . $this->leadData['email'] . '>' ?>" />
+                </div></td>
+              </tr>
+              <tr>
+                <td><div align="right"><strong>Subject</strong></div></td>
+                <td><div align="left">
+                  <input name="email_subject" type="text" id="email_subject" size="35" style="margin:0" />
+                </div></td>
+              </tr>
+              <tr>
+                <td colspan="2"><div align="center"><strong>Message</strong></div></td>
+                </tr>
+              <tr>
+                <td colspan="2">
+                <div align="center" style="clear:both">
+                  <textarea name="email_body" id="email_body" cols="65" rows="8"></textarea>
+                  <script type="text/javascript">make_wyzz('email_body');</script>
+                </div></td>
+                </tr>
+           </table>                      
+        </div></td>
+    </tr>       
+  <tr>
+    <td colspan="3"><div align="center">
+      <input type="submit" name="button" id="button" value="Send &gt;&gt;" style="text-align:center; width:auto" />
+    </div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+</div>

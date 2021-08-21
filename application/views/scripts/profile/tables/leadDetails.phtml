@@ -1,0 +1,47 @@
+ <table width="90%" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <caption>Lead Details</caption>
+    <thead>
+      <tr>
+        <th colspan="2" scope="col">Lead  Details</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td width="50%" style="text-align:right;font-weight:bold;">Lead Type</td>
+        <td width="50%"><div align="left">{lead_html}</div></td>
+      </tr>
+      <tr>
+        <td style="text-align:right;font-weight:bold;">Date Added</td>
+        <td style="text-align:left;">{date_added}</td>
+      </tr>
+      <tr>
+        <td style="text-align:right;font-weight:bold;">Sales Person</td>
+        <td style="text-align:left;">{sales_person}</td>
+      </tr>
+      <tr>
+        <td style="text-align:right;font-weight:bold;">Next Follow Up</td>
+        <td style="text-align:left;" id="reminderField">{next_followup} (<a href="javascript:void(0)" onclick="SetReminder()" style="border:0">set new</a>)</td>
+      </tr>
+      <tr>
+        <td style="text-align:right;font-weight:bold;">Total Amount</td>
+        <td style="text-align:left;">{total_amount}</td>
+      </tr>
+      <tr>
+        <td style="text-align:right;font-weight:bold;">Paid Amount</td>
+        <td style="text-align:left;">{paid_amount}</td>
+      </tr>
+      <tr>
+        <td style="text-align:right;font-weight:bold;">Event Date </td>
+        <td style="text-align:left;">{event_date}</td>
+      </tr>
+      <!-- <tr>
+        <td style="text-align:right;font-weight:bold;">Class Time</td>
+        <td style="text-align:left;">{class_time}</td>
+      </tr>
+      <tr>
+        <td style="text-align:right;font-weight:bold;">Graduated</td>
+        <td style="text-align:left;">{graduated}</td>
+      </tr> -->
+    </tbody>
+  </table>

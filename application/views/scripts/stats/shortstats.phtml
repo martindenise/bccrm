@@ -1,0 +1,12 @@
+Welcome <?= $this->real_name ?>
+<br />
+<br />
+<br />
+New Leads: <?= $this->newLeads; ?>
+<br />
+Bookings: <?= $this->booked; ?>
+<br />
+Sales: $<?= $this->sales; ?>
+<br />
+<br />
+<a href="<?= $this->url(array('controller'=>'auth','action'=>'logout'))?>">Logout</a>

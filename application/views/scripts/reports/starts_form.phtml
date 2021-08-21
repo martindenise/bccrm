@@ -1,0 +1,84 @@
+<div id="addNewLeadContainer">
+<link href="<?= SITE_ROOT.'/css/calendar.css' ?>" media="screen" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?= SITE_ROOT.'/js/calendar.js' ?>"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#show_due").click(function() {
+		if ($(this).is(':checked')) {
+			$("#show_only_due").attr('disabled','');
+		}
+		else {
+			$("#show_only_due").attr('disabled','disabled');
+		}
+	});
+});
+</script>
+
+<form name="dayReport" action="<?= $this->url(array('controller'=>'reports','action'=>'starts'),'default',true); ?>" method="post">
+<table width="300" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th colspan="2">Starts Report</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td width="130"><div align="right">Select Market</div></td>
+    <td width="170">
+      <div align="left">
+        <?= $this->formSelect('campus_id','select',array('style' => 'font-size:11px'),$this->schools); ?>
+      </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Choose a Date</div></td>
+    <td><div align="left">
+      <input name="date" type="text" id="date" style="width:70px; text-align:center" readonly="readonly" />
+      <img src="<?= SITE_ROOT."/images/icons/calendar.png" ?>" name="date_button" width="10" height="10" id="date_button" style="cursor:pointer; " />
+      <script type="text/javascript">
+        Calendar.setup({
+            inputField     :    "date",
+            ifFormat       :    "%m/%d/%Y",
+            button         :    "date_button",
+            singleClick    :    false,
+            step           :    1
+        });
+   		</script>
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Choose Time</div></td>
+    <td><label for="sales_person_id"></label>
+        <div align="left">
+		<!-- sales persons select menu -->
+		<select name="time" id="time" style="font-size:11px;">
+		  <option value="none" selected="selected">(all)</option>
+            <option value="One Week - 10-6">One Week - 10-6</option>
+            <option value="One Week - 2-10">One Week - 2-10</option>
+            <option value="Two Weeks - 10-2">Two Weeks - 10-2</option>
+            <option value="Two Weeks - 2-6">Two Weeks - 2-6</option>
+            <option value="Two Weeks - 6-10">Two Weeks - 6-10</option>
+            <option value="Two Weekend - 10-6">Two Weekend - 10-6</option>
+            <option value="Open Date">Open Date</option>
+          </select>
+        </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Due Balances</div></td>
+    <td><input name="show_due" type="checkbox" id="show_due" value="1" style="width:auto" />
+      Show
+        <br />
+        <input name="show_only_due" type="checkbox" id="show_only_due" value="1" style="width:auto" disabled="disabled" />
+        Show only  students with due balance</td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2"><div align="center">
+      <input type="submit" name="button" id="button" value="Submit" style="text-align:center; width:auto" />
+    </div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+</div>

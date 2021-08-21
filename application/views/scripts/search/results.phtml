@@ -1,0 +1,11 @@
+
+<!-- output the leads table -->
+<?= $this->table($this->searchResults,$this->tableConfig); ?>
+
+<!-- results per page links -->
+<?= $this->perPageMenu($this->baseLink,$this->perPageLinksClass); ?>
+
+<br>
+<br>
+<!-- pagination -->
+<?= $this->pagination($this->paginationConfig) ?>

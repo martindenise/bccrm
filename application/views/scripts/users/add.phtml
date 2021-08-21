@@ -1,0 +1,85 @@
+<?php
+
+echo $this->categoryMenu('/views/scripts/users/users_menu.phtml');
+
+if ($this->errors) {
+	echo $this->errorDiv($this->errors);
+}
+
+?>
+
+<div id="addNewLeadContainer">
+<form name="addLead" action="<?= $this->url(array('controller'=>'users','action'=>'add', 'id' => (!empty($this->userData['id']) ? $this->userData['id'] : '')),'default',true); ?>" method="post">
+<table width="350" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th colspan="2">Add User</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td width="150"><div align="right">Name</div></td>
+    <td width="200">
+      <div align="left">
+        <input type="text" name="name" id="name" style="margin:0;" value="<?= (!empty($this->userData['name']) ? $this->userData['name'] : '') ?>" />
+      </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Email Address</div></td>
+    <td><div align="left">
+        <input type="text" name="email" id="email" style="margin:0;" value="<?= (!empty($this->userData['email']) ? $this->userData['email'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Username</div></td>
+    <td><div align="left">
+      <input type="text" name="username" id="username" style="margin:0;" value="<?= (!empty($this->userData['username']) ? $this->userData['username'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Password</div></td>
+    <td><div align="left">
+      <input type="text" name="password" id="password" style="margin:0;" value="<?= (!empty($this->userData['password']) ? $this->userData['password'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Admin</div></td>
+    <td><div align="left">
+        <label>
+        <input type="radio" name="admin" value="1" style="width:auto; margin:0;" <?php if (!empty($this->userData['admin']) && $this->userData['admin'] == '1') { echo 'checked="checked"'; }  ?> />
+          Yes</label>
+        <label>
+        <input name="admin" type="radio" style="width:auto; margin:0; margin-left:10px;" value="0" <?php if (empty($this->userData['admin'])) { echo 'checked="checked"'; } ?> />
+          No</label>
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Active</div></td>
+    <td><div align="left">
+        <label>
+          <input name="active" type="radio" style="width:auto; margin:0;" value="1"  <?php if (!isset($this->userData['active']) || (isset($this->userData['active']) && $this->userData['active'] == '1')) { echo 'checked="checked"'; }  ?> />
+          Yes</label>
+        <label>
+          <input name="active" type="radio" style="width:auto; margin:0; margin-left:10px;" value="0" <?php if (isset($this->userData['active']) && $this->userData['active'] == '0' ) { echo 'checked="checked"'; } ?> />
+          No</label>
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Allowed Markets</div></td>
+    <td rowspan="2" valign="top"><div align="left">
+    <?= $this->formMultiCheckbox('allowed_campuses',$this->allowedSchools,array('style' => 'width:auto;margin-right:5px;'),$this->schools); ?>
+    </div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    </tr>
+  <tr>
+    <td colspan="2"><div align="center">
+      <input type="hidden" name="userId" value="<?= (!empty($this->userData['id']) ? $this->userData['id'] : '') ?>" />
+      <input type="submit" name="button" id="button" value="Save" style="text-align:center; width:auto" />
+    </div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+</div>

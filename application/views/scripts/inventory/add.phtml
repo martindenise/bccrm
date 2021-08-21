@@ -1,0 +1,52 @@
+<?php
+
+echo $this->categoryMenu('/views/scripts/inventory/inventory_menu.phtml');
+
+if ($this->errors) {
+	echo $this->errorDiv($this->errors);
+}
+
+?>
+
+<div id="addNewLeadContainer">
+<form name="addLead" action="<?= $this->url(array('controller'=>'inventory','action'=>'add'),'default',true); ?>" method="post">
+<table width="350" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th colspan="2">Add Equipment</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td width="100"><div align="right">Name</div></td>
+    <td width="250">
+      <div align="left">
+        <input type="text" name="name" id="name" style="margin:0; width:200px;" value="<?= (!empty($this->itemData['name']) ? $this->itemData['name'] : '') ?>" />
+      </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Type</div></td>
+    <td><div align="left">
+      <select name="type" id="type" style="font-size:11px; width:100px;">
+      	<option value="table"<?php if (!empty($this->itemData['name']) && $this->itemData['name'] == 'table') echo ' selected="selected"'; ?>>Table</option>
+      	<option value="service"<?php if (!empty($this->itemData['name']) && $this->itemData['name'] == 'service') echo ' selected="selected"'; ?>>Service</option>
+      </select>
+    </div></td>
+  </tr>
+    <tr>
+    <td width="100"><div align="right">No. of dealers</div></td>
+    <td width="250">
+      <div align="left">
+        <input type="text" name="dealers" id="dealers" style="margin:0; width:30px;" value="<?= (!empty($this->itemData['dealers']) ? $this->itemData['dealers'] : '1') ?>" />
+      </div></td>
+  </tr>
+  <tr>
+    <td colspan="2"><div align="center">
+      <input type="hidden" name="itemId" value="<?= (!empty($this->itemData['id']) ? $this->itemData['id'] : '') ?>" />
+      <input type="submit" name="button" id="button" value="Save" style="text-align:center; width:auto" />
+    </div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+</div>

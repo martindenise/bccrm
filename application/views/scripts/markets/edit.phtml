@@ -1,0 +1,502 @@
+<?php
+
+echo $this->categoryMenu('/views/scripts/markets/markets_menu.phtml');
+
+if ($this->errors) {
+	echo $this->errorDiv($this->errors);
+}
+
+?>
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>
+
+<script type="text/javascript">
+var marketId = "<?php echo $this->marketData['id']; ?>";
+$(document).ready(function() {
+	$("#addSpecialPrices").click(function() {
+		window.location = "<?= $this->url(array('controller'=>'markets','action'=>'add-special-day'),'default',true); ?>?id="+marketId;
+	});
+	$(".hideTable").click(function() {
+		if ('(hide)' == $(this).html()) {
+			$(this).parent().parent().parent().parent().children("tbody").hide();
+			$(this).html('(show)');
+		} else {
+			$(this).parent().parent().parent().parent().children("tbody").show();
+			$(this).html('(hide)');
+		}
+	});
+
+	$("#eq_type").change(function() {
+		$("#tableType").hide();
+		$("#serviceType").hide();
+		val = $(this).val();
+		if (val) {
+			$("#" + val + "Type").show();
+		}
+	});
+	
+	$("#addTable").click(function() {
+		showLoading();
+		params = 'type=table&id=' + $("#table_id").val() + '&price=' + $("#price").val() + '&price_dealer=' + $("#price_dealer").val() + '&extra_hour_price=' + $("#extra_hour_price").val() + '&inventory_total=' + $("#inventory_total").val() + '&marketId=' + marketId;
+		$.ajax({
+			cache: false,
+			dataType: 'plain',
+			type: 'POST',
+			data: params,
+			url: "<?= $this->url(array('controller'=>'markets','action'=>'add-inventory'),'default',true); ?>",
+			success: function(data, textStatus, reqObj) {
+				if (data != 'OK') {
+					alert(data);
+				}
+				refreshInventory();
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(textStatus + ': ' + errorThrown);
+				refreshInventory();
+			}
+		});
+	});
+	
+	$("#addService").click(function() {
+		showLoading();
+		params = 'type=service&id=' + $("#service_id").val() + '&price=' + $("#price_s").val() + '&price_dealer=0&extra_hour_price=' + $("#extra_hour_price_s").val() + '&inventory_total=' + $("#inventory_total_s").val() + '&marketId=' + marketId;
+		$.ajax({
+			cache: false,
+			dataType: 'plain',
+			type: 'POST',
+			data: params,
+			url: "<?= $this->url(array('controller'=>'markets','action'=>'add-inventory'),'default',true); ?>",
+			success: function(data, textStatus, reqObj) {
+				if (data != 'OK') {
+					alert(data);
+				}
+				refreshInventory();
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(textStatus + ': ' + errorThrown);
+				refreshInventory();
+			}
+		});
+	});
+
+	$("#addDiscount").click(function() {
+		params = 'no_of_tables=' + $("#discount_no_tables").val() + '&percent=' + $("#discount_percent").val() + '&marketId=' + marketId;
+		$.ajax({
+			cache: false,
+			dataType: 'plain',
+			type: 'POST',
+			data: params,
+			url: "<?= $this->url(array('controller'=>'markets','action'=>'add-discount'),'default',true); ?>",
+			success: function(data, textStatus, reqObj) {
+				if (data != 'OK') {
+					alert(data);
+				}
+				refreshDiscounts();
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(textStatus + ': ' + errorThrown);
+				refreshDiscounts();
+			}
+		});
+	});
+
+	$(".updateInventoryTotal").live("click", function() {
+		eqId = $(this).attr('alt');
+		params = 'inventory_total=' + $("input[name=inventory_total" + eqId + "]").val() + '&eqId=' + eqId;
+		$.ajax({
+			cache: false,
+			dataType: 'plain',
+			type: 'POST',
+			data: params,
+			url: "<?= $this->url(array('controller'=>'markets','action'=>'update-total-inventory'),'default',true); ?>",
+			success: function(data, textStatus, reqObj) {
+				if (data != 'OK') {
+					alert(data);
+				}
+				refreshInventory();
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				alert('Update total inventory fail - ' + textStatus);
+			}
+		});
+	});
+	
+	refreshInventory();
+	refreshDiscounts();
+});
+
+function refreshInventory() {
+	showLoading();
+	$("#inventoryList").load("<?= $this->url(array('controller'=>'markets','action'=>'get-inventory'),'default',true); ?>?id=" + marketId, function(responseText, textStatus, XMLHttpRequest) { bindRemLinks(); });
+}
+function refreshDiscounts() {
+	$("#discountsList").load("<?= $this->url(array('controller'=>'markets','action'=>'get-discounts'),'default',true); ?>?id=" + marketId, function(responseText, textStatus, XMLHttpRequest) { bindRemLinksDiscounts(); });
+}
+
+function bindRemLinks() {
+	$(".rem-inventory").click(function(mye) {
+		mye.preventDefault();
+		$.ajax({
+			cache: false,
+			type: 'POST',
+			url: $(this).attr("href"),
+			success: function(data, textStatus, reqObj) {
+
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				alert('The equipment was not removed - ' + textStatus);
+			}
+		});
+		$(this).parent().parent().fadeOut();
+	});
+};
+
+function bindRemLinksDiscounts() {
+	$(".rem-discount").click(function(mye) {
+		mye.preventDefault();
+		$.ajax({
+			cache: false,
+			type: 'POST',
+			url: $(this).attr("href"),
+			success: function(data, textStatus, reqObj) {
+
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				alert('The discount was not removed - ' + textStatus + ': ' + errorThrown);
+			}
+		});
+		$(this).parent().parent().fadeOut();
+	});
+};
+
+function showLoading() {
+	$("#inventoryList").html('<tr><td colspan="7" style="text-align:center"><img src="<?php echo SITE_ROOT; ?>/images/loading.gif" /></td></tr>');
+}
+</script>
+<div id="addNewLeadContainer">
+<form name="addLead" action="<?= $this->url(array('controller'=>'markets','action'=>'edit'),'default',true); ?>" method="post">
+<table width="350" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th>Add Market</th>
+    <th><div style="width:100%; text-align:right; font-size:10px; cursor:pointer;" class="hideTable">(hide)</div></th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td width="150"><div align="right">Name</div></td>
+    <td width="200">
+      <div align="left">
+        <input type="text" name="name" id="name" style="margin:0;" value="<?= (!empty($this->marketData['name']) ? $this->marketData['name'] : '') ?>" />
+      </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Contact Name</div></td>
+    <td><div align="left">
+      <input type="text" name="contact_name" id="contact_name" style="margin:0;" value="<?= (!empty($this->marketData['contact_name']) ? $this->marketData['contact_name'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Email Address</div></td>
+    <td><div align="left">
+        <input type="text" name="email" id="email" style="margin:0;" value="<?= (!empty($this->marketData['email']) ? $this->marketData['email'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Phone</div></td>
+    <td><div align="left">
+      <input type="text" name="phone" id="phone" style="margin:0;" value="<?= (!empty($this->marketData['phone']) ? $this->marketData['phone'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Address</div></td>
+    <td><div align="left">
+      <input type="text" name="address" id="address" style="margin:0;" value="<?= (!empty($this->marketData['address']) ? $this->marketData['address'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">City</div></td>
+    <td><div align="left">
+      <input type="text" name="city" id="city" style="margin:0;" value="<?= (!empty($this->marketData['city']) ? $this->marketData['city'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">State</div></td>
+    <td><div align="left">
+      <input type="text" name="state" id="state" style="margin:0;" value="<?= (!empty($this->marketData['state']) ? $this->marketData['state'] : '') ?>" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">ZIP</div></td>
+    <td><div align="left">
+      <input type="text" name="zip" id="zip" style="margin:0;" value="<?= (!empty($this->marketData['zip']) ? $this->marketData['zip'] : '') ?>" />
+    </div></td>
+  </tr>
+	<tr>
+    <td><div align="right">Paid in full discount</div></td>
+    <td><div align="left">
+      <input type="text" name="full_pay_discount" id="full_pay_discount" style="margin:0; width:25px; text-align:right" value="<?= (!empty($this->marketData['full_pay_discount']) ? $this->marketData['full_pay_discount'] : '0') ?>" />%
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Sales Tax</div></td>
+    <td><div align="left">
+      <input type="text" name="sales_tax" id="sales_tax" style="margin:0; width:25px; text-align:right" value="<?= (!empty($this->marketData['sales_tax']) ? $this->marketData['sales_tax'] : '0') ?>" />%
+    </div></td>
+  </tr>
+    <td colspan="2"><div align="center">
+      <input type="hidden" name="id" value="<?= (!empty($this->marketData['id']) ? $this->marketData['id'] : '') ?>" />
+      <input type="submit" name="button" id="button" value="Save" style="text-align:center; width:auto" />
+    </div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+<br />
+<table width="780" cellspacing="0" border="0" style="margin: auto;" class="tblStyle2">
+  <caption>School Inventory - Base Prices &nbsp;&nbsp;<a style="text-decoration:none; border:0;" href="<?php echo $this->url(array('controller' => 'markets', 'action' => 'edit-prices', 'id' => $this->marketData['id']), 'default', true); ?>">[edit]</a></caption>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th style="text-align: center;">Price w/o Dealer</th>
+        <th style="text-align: center;">Price w/ Dealer</th>
+        <th style="text-align: center;">Extra Hour Price</th>
+        <th style="text-align: center;">Total Inventory</th>
+        <th style="text-align: center;">In Stock</th>
+		<th>Remove <div style="float:right; font-size:10px; cursor:pointer;" class="hideTable">(hide)</div></th>
+            </tr>
+    </thead>
+    <tbody id="inventoryList"></tbody>
+  </table>
+<br />
+<div style="width:400px; margin:0 auto;">
+	<table width="100%" border="0" cellspacing="5" cellpadding="5" class="cellPadding" style="font-size:12px;">
+    	<caption style="font-size:14px; font-weight:bold; margin-bottom:15px;">Add Invetory Item</caption>
+    	<tr>
+        	<td width="50%" style="text-align:right">Equipment type</td>
+            <td width="50%" style="text-align:left">
+                <select name="eq_type" id="eq_type" style="font-size:12px;width:80px">
+                	<option value="">(choose)</option>
+                	<option value="table">Table</option>
+                    <option value="service">Service</option>
+                </select>
+            </td>
+        </tr>
+        <tr id="tableType" style="display:none">
+        	<td colspan="2">
+            	<table width="100%" class="cellPadding">
+                	<tr>
+                        <td width="50%" style="text-align:right">Table Name</td>
+                        <td width="50%" style="text-align:left">
+                        	<?php echo $this->formSelect('table_id', null, array('style' => 'font-size:12px;width:170px;'), $this->tables); ?>
+                        </td>
+                    </tr>
+                	<tr>
+                    	<td width="50%" style="text-align:right">Table Price Without Dealer</td>
+                        <td width="50%" style="text-align:left">
+							$ <input type="text" name="price" id="price" style="font-size:12px; width:50px; text-align:center;" />
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td width="50%" style="text-align:right">Table Price With Dealer</td>
+                        <td width="50%" style="text-align:left">
+							$ <input type="text" name="price_dealer" id="price_dealer" style="font-size:12px; width:50px; text-align:center;" />
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td width="50%" style="text-align:right">Extra Hour Price</td>
+                        <td width="50%" style="text-align:left">
+							$ <input type="text" name="extra_hour_price" id="extra_hour_price" style="font-size:12px; width:50px; text-align:center;" />
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td width="50%" style="text-align:right">Total Inventory</td>
+                        <td width="50%" style="text-align:left">
+							<input type="text" name="inventory_total" id="inventory_total" style="font-size:12px; width:50px; text-align:center;" />
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td colspan="2" style="text-align:center"><input type="button" value="Add Item" name="addTable" id="addTable" style="text-align:center"  /></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr id="serviceType" style="display:none">
+        	<td colspan="2">
+            	<table width="100%" class="cellPadding">
+            		<tr>
+                        <td width="50%" style="text-align:right">Additional Service Name</td>
+                        <td width="50%" style="text-align:left">
+                        	<?php echo $this->formSelect('service_id', null, array('style' => 'font-size:12px;width:170px;'), $this->services); ?>
+                        </td>
+                    </tr>
+                	<tr>
+                    	<td width="50%" style="text-align:right">Price</td>
+                        <td width="50%" style="text-align:left">
+							$ <input type="text" name="price_s" id="price_s" style="font-size:12px; width:50px; text-align:center;" />
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td width="50%" style="text-align:right">Extra Hour Price</td>
+                        <td width="50%" style="text-align:left">
+							$ <input type="text" name="extra_hour_price_s" id="extra_hour_price_s" style="font-size:12px; width:50px; text-align:center;" />
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td width="50%" style="text-align:right">Total Inventory</td>
+                        <td width="50%" style="text-align:left">
+							<input type="text" name="inventory_total_s" id="inventory_total_s" style="font-size:12px; width:50px; text-align:center;" />
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td colspan="2" style="text-align:center"><input type="button" value="Add Item" name="addService" id="addService" style="text-align:center"  /></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+  <br />
+<table width="780" cellspacing="0" border="0" style="margin: auto;" class="tblStyle2">
+  <caption>School Inventory - Weekend Prices</caption>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th style="text-align: center;">Price w/o Dealer</th>
+        <th style="text-align: center;">Price w/ Dealer</th>
+        <th style="text-align: center;">Extra Hour Price</th>
+      </tr>
+    </thead>
+    <tbody>
+	<?php
+	if (empty($this->weekendPrices)):
+	?>
+	<tr><td colspan="4" style="text-align:center">No items in the market inventory.</td></tr>
+	<?php
+	else:
+		foreach($this->weekendPrices as $row) {
+	?>
+		<tr>
+			<td><?php echo $row['name']; ?> (<?php echo $row['type']; ?>)</td>
+			<td style="text-align: center">$<?php echo $row['price']; ?></td>
+			<td style="text-align: center">$<?php echo $row['price_dealer']; ?></td>
+			<td style="text-align: center">$<?php echo $row['extra_hour_price']; ?></td>
+		</tr>
+	<?php
+		}
+	endif;
+	?>
+    </tbody>
+  </table>
+<br />
+<table width="780" cellspacing="0" border="0" style="margin: auto;" class="tblStyle2">
+  <caption>School Day On Promo / Special Prices</caption>
+    <thead>
+      <tr>
+        <th width="190" style="text-align: center">Item</th>
+        <th width="110" style="text-align: center">Price w/o Dealer</th>
+        <th width="100" style="text-align: center">Price w/ Dealer</th>
+        <th width="110" style="text-align: center">Extra Hour Price</th>
+		<th width="60" style="text-align: right">Remove</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php if (empty($this->promos)): ?>
+    <tr><td colspan="5" style="text-align:center">No promos / special prices added to the system.</td></tr>
+    <?php else:
+    		foreach ($this->promos as $promo):
+    ?>
+    	<tr style="background-color: #cddae5">
+	    	<td colspan="4" style="font-weight:bold; font-style:italic; font-size:110%; letter-spacing:1px;"><?php
+	    		$startTimestamp = strtotime($promo['date_start']);
+	    		$endTimestamp = strtotime($promo['date_end']);
+	    		echo date('M jS, Y', $startTimestamp) . ' &nbsp;&nbsp;to&nbsp;&nbsp; ' . date('M, jS Y', $endTimestamp);
+	    		?>
+	    		</td>
+	    	<td style="text-align:right"><a href="<?php echo $this->url(array('controller' => 'markets', 'action' => 'edit'), 'default', true) . "?id={$this->marketData['id']}&date_start=" . urlencode($promo['date_start']) . "&date_end=" . urlencode($promo['date_end']); ?>" onclick="return confirm('Are you sure you want to remove this promo?')">Remove</a></td>
+    	</tr>
+    	<?php foreach ($promo['promos'] as $stepPromos): ?>
+    		<tr>
+    			<td><?php echo $stepPromos['name']; ?></td>
+    			<td style="text-align: center">$<?php echo $stepPromos['price']; ?></td>
+				<td style="text-align: center">$<?php echo $stepPromos['price_dealer']; ?></td>
+				<td style="text-align: center">$<?php echo $stepPromos['extra_hour_price']; ?></td>
+				<td>&nbsp;</td>
+    		</tr>
+    <?php
+    		endforeach;
+    	endforeach;
+    endif;
+    ?>
+    </tbody>
+    <tfoot>
+    	<tr><th colspan="5" style="text-align:center" scope="row"><input type="button" value="Add New Day / Period" name="addSpecialPrices" id="addSpecialPrices" style="text-align:center; width:150px; font-size:12px;"  /></th></tr>
+    </tfoot>
+  </table>
+  <br />
+<table width="780" cellspacing="0" border="0" style="margin: auto;" class="tblStyle2">
+  <caption>Blacked Out Dates</caption>
+    <thead>
+      <tr>
+        <th style="text-align: center;">Start Date</th>
+        <th style="text-align: center;">End Date</th>
+        <th style="text-align: right;">Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+	<?php
+	if (empty($this->blackedOutDates)):
+	?>
+	<tr><td colspan="4" style="text-align:center">There are no dates blacked out for this market.</td></tr>
+	<?php
+	else:
+		foreach($this->blackedOutDates as $row) {
+	?>
+		<tr>
+			<td style="text-align: center"><?php echo date('M jS, Y', strtotime($row['date_start'])); ?></td>
+			<td style="text-align: center"><?php echo date('M jS, Y', strtotime($row['date_end'])); ?></td>
+			<td style="text-align: right"><a href="<?php echo $this->url(array('controller' => 'markets', 'action' => 'edit'), 'default', true) . "?id={$this->marketData['id']}&blackoutDateId={$row['id']}"; ?>" onclick="return confirm('Are you sure you want to remove this blacked out date?')">Remove</a></td>
+		</tr>
+	<?php
+		}
+	endif;
+	?>
+    </tbody>
+  </table>
+  <br /><br />
+<table width="400" cellspacing="0" border="0" style="margin: auto;" class="tblStyle2">
+  <caption>Multi Table Discounts</caption>
+    <thead>
+      <tr>
+        <th style="text-align: center" width="120">Minimum no. of tables</th>
+        <th style="text-align: center" width="120">Discount %</th>
+        <th style="text-align: center" width="70">Remove</th>
+            </tr>
+    </thead>
+    <tbody id="discountsList"></tbody>
+  </table>
+  <br />
+  <div style="width:400px; margin:0 auto;">
+	<table width="100%" border="0" cellspacing="5" cellpadding="5" class="cellPadding" style="font-size:12px;">
+    	<caption style="font-size:14px; font-weight:bold; margin-bottom:5px;">Add Discount</caption>
+    	<tr>
+        	<td width="50%" style="text-align:right">Minimum no. of tables</td>
+            <td width="50%" style="text-align:left">
+                <input type="text" name="discount_no_tables" id="discount_no_tables" style="width:30px; text-align: center;" value="0" />
+            </td>
+        </tr>
+        <tr>
+        	<td width="50%" style="text-align:right">Discount value</td>
+            <td width="50%" style="text-align:left">
+                <input type="text" name="discount_percent" id="discount_percent" style="width:30px; text-align: center;" maxlength="2" value="0" />%
+            </td>
+        </tr>
+        <tr>
+        	<td colspan="2" style="text-align:center"><input type="button" value="Add Discount" name="addDiscount" id="addDiscount" style="text-align:center"  /></td>
+        </tr>
+    </table>
+</div>
+</div>

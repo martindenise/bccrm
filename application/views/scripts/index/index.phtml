@@ -1,0 +1,16 @@
+<b>Hello <?= Zend_Auth::getInstance()->getStorage()->read()->name; ?></b> - you have
+<a href="<?php echo $this->url(array('controller'=>'newleads'));?>"><?php echo $this->totalnewLeads; ?> new contacts</a>,
+<a href="<?php echo $this->url(array('controller'=>'leads','action'=>'followups'));?>"> <?php echo $this->totalFollowups; ?> follow up(s)</a> for leads and
+<a href="<?php echo $this->url(array('controller'=>'confirmation','action'=>'list'));?>/leads"> <?php echo $this->totalConfirmations; ?> awaiting confirmations</a>
+<br><br>
+
+
+<!-- output the leads table -->
+<?= $this->table($this->newLeads,$this->newLeadsTableConfig); ?>
+<div style="width:90%; margin:auto;margin-top:10px; text-align:right"><img src="<?=SITE_ROOT;?>/images/icons/contact_small.png" style="border:0" alt="Send Stock Email" /> - Send stock email to new contact</div>
+<div style="width:90%; margin:auto;margin-top:0; text-align:center"><a href="<?php echo $this->url(array('controller'=>'newleads'));?>">Show All</a></div>
+<br>
+<br>
+<!-- output the leads table -->
+<?= $this->table($this->leadsFollowups,$this->leadsTableConfig); ?>
+<div style="width:90%; margin:auto;margin-top:10px; text-align:center"><a href="<?php echo $this->url(array('controller'=>'leads','action'=>'followups'));?>">Show All</a></div>

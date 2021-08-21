@@ -1,0 +1,48 @@
+<?php
+
+if ($this->error) {
+	echo 'The requested contact information can not be retrieved. <br />Please try again.';
+}
+else {
+
+}
+
+?>
+<style type="text/css">
+<!--
+body {
+	font-family:Arial, Helvetica, sans-serif; font-size:11px; line-height:14px; color:#8997a0; background: #e5e5e5;
+}
+.style1 {
+font-family:Arial, Helvetica, sans-serif; font-size:11px; line-height:14px;
+}
+-->
+</style>
+<link href="<?= SITE_ROOT; ?>/css/tables.css" media="screen" rel="stylesheet" type="text/css" />
+<table width="350" border="0" class="tblStyle2">
+  <thead>
+  <tr>
+    <th colspan="2" class="style1">Contact Details</th>
+  </tr>
+  </thead>
+  <tr>
+    <td width="100" class="style1"><div align="right"><strong>Date &amp; Time</strong></div></td>
+    <td width="250" class="style1"><?= date("H:i \o\\n m/d/Y",$this->contactItem['date_time']); ?></td>
+  </tr>
+  <tr>
+    <td class="style1"><div align="right"><strong>Sales Person</strong></div></td>
+    <td class="style1"><?= $this->contactItem['sales_person']; ?></td>
+  </tr>
+  <tr>
+    <td class="style1"><div align="right"><strong>Type</strong></div></td>
+    <td class="style1"><?= $this->contactItem['type']; ?></td>
+  </tr>
+  <tr>
+    <td class="style1"><div align="right"><strong>Message</strong></div></td>
+    <td class="style1"><?= $this->contactItem['message']; ?></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>

@@ -1,0 +1,62 @@
+<!-- success message? -->
+<?= ($this->succesMessage) ? $this->successDiv($this->succesMessage) : ''; ?>
+
+<!-- error message? -->
+<?= ($this->errorMessage) ? $this->errorDiv($this->errorMessage) : ''; ?>
+
+
+<div id="addNewLeadContainer">
+<link href="<?= SITE_ROOT.'/css/calendar.css' ?>" media="screen" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?= SITE_ROOT.'/js/calendar.js' ?>"></script>
+
+<form name="search" action="<?= $this->url(array('controller'=>'search','action'=>'results'),'default',true); ?>" method="get">
+<table width="300" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th colspan="2">Search</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td width="40%"><div align="right">Market</div></td>
+    <td width="60%">
+      <div align="left">
+        <?= $this->formSelect('campus_id','select',array('style' => 'font-size:11px'),$this->schools); ?>
+      </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">First Name</div></td>
+    <td><div align="left">
+      <input type="text" name="first_name" id="first_name" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Last Name</div></td>
+    <td><div align="left">
+      <input type="text" name="last_name" id="last_name" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Email Address</div></td>
+    <td><div align="left">
+      <input type="text" name="email" id="email" />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">Phone Number</div></td>
+    <td><div align="left">
+      <input type="text" name="phone" id="phone" />
+    </div></td>
+  </tr>
+  <tr>
+    <td colspan="2"><div align="center">
+      <input type="submit" name="button" id="button" value="Search &gt;&gt;" style="text-align:center; width:auto" />
+    </div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+</div>
+<?= $this->hintDiv('You can search any combination you like. At least one field is required.<br />
+Each search term must have at least 3 characters.');
+?>

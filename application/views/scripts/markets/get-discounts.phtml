@@ -1,0 +1,23 @@
+<?php
+
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT" );
+header("Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . "GMT" );
+header("Cache-Control: no-cache, must-revalidate" );
+header("Pragma: no-cache" );
+
+if (empty($this->discounts)):
+?>
+<tr><td colspan="3" style="text-align:center">No discounts for this market.</td></tr>
+<?php
+else:
+	foreach($this->discounts as $row) {
+?>
+	<tr>
+		<td style="text-align: center"><?php echo $row['tables']; ?></td>
+		<td style="text-align: center"><?php echo $row['percent']; ?>%</td>
+		<td style="text-align: center"><a href="<?php echo $this->url(array('controller'=>'markets','action'=>'rem-discount'),'default',true); ?>?id=<?php echo $row['discount_id']; ?>" class="rem-discount">Remove</a></td>
+	</tr>
+<?php
+	}
+endif;
+?>

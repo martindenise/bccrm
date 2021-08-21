@@ -1,0 +1,92 @@
+<div id="addNewLeadContainer">
+<link href="<?= SITE_ROOT.'/css/calendar.css' ?>" media="screen" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?= SITE_ROOT.'/js/calendar.js' ?>"></script>
+
+<form name="dayReport" action="<?= $this->url(array('controller'=>'reports'),'default',true); ?>" method="post">
+<table width="300" border="0" cellspacing="0" class="tblStyle2" style="margin: auto;">
+  <thead>
+  <tr>
+    <th colspan="2">Reports</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td width="120"><div align="right">Choose Period</div></td>
+    <td width="180"><div align="left">
+      <input name="from_date" type="text" id="from_date" style="width:70px; text-align:center" readonly="readonly" />
+      <img src="<?= SITE_ROOT."/images/icons/calendar.png" ?>" name="from_date_button" width="10" height="10" id="from_date_button" style="cursor:pointer; " />
+      <script type="text/javascript">
+        Calendar.setup({
+            inputField     :    "from_date",
+            ifFormat       :    "%m/%d/%Y",
+            button         :    "from_date_button",
+            singleClick    :    false,
+            step           :    1
+        });
+   		</script>
+      <br />
+      to<br />
+      <input name="to_date" type="text" id="to_date" style="width:70px; text-align:center" readonly="readonly" />
+      <img src="<?= SITE_ROOT."/images/icons/calendar.png" ?>" name="to_date_button" width="10" height="10" id="to_date_button" style="cursor:pointer; " />
+      <script type="text/javascript">
+        Calendar.setup({
+            inputField     :    "to_date",
+            ifFormat       :    "%m/%d/%Y",
+            button         :    "to_date_button",
+            singleClick    :    false,
+            step           :    1
+        });
+   		</script>
+      <br />
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="right">What to Report</div></td>
+    <td><input type="radio" name="what" id="radio3" value="new_leads" style="margin:0; width:auto;" />
+      New Contacts<br />
+<input type="radio" name="what" id="radio3" value="leads" style="margin:0; width:auto;" />
+      Leads<br />
+<input type="radio" name="what" id="radio3" value="booked" style="margin:0; width:auto;" />
+      Bookings
+<?php
+// Allow sales reports only for admin
+if ($this->userIsAdmin) { ?>
+      <br />
+<input type="radio" name="what" id="radio3" value="sales" style="margin:0; width:auto;" />
+      Sales $
+<?php } ?>
+      </td>
+  </tr>
+  <tr>
+    <td><div align="right">Report By</div></td>
+    <td><div align="left">
+                  <input type="radio" name="search_by" id="radio" value="school" onclick="showHideReportsBy('school')" style="margin:0; width:auto;" />
+                  Market
+                  <input type="radio" name="search_by" id="radio2" value="sales_person" onclick="showHideReportsBy('sales_person')" style="margin:0; width:auto; margin-left: 10px" />
+                  Representative</div>    </td>
+  </tr>
+  <tr id="school" style="display:none">
+    <td width="130"><div align="right">Market</div></td>
+    <td width="170">
+      <div align="left">
+        <?= $this->formSelect('campus_id','select',array('style' => 'font-size:11px'),$this->schools); ?>
+      </div></td>
+  </tr>
+  <tr id="sales_person" style="display:none">
+    <td><div align="right">Representative</div></td>
+    <td><div align="left">
+        <?= $this->formSelect('sales_person_id','select',array('style' => 'font-size:11px'),$this->salesPersons); ?>
+    </div></td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2"><div align="center">
+      <input type="submit" name="button" id="button" value="Submit" style="text-align:center; width:auto" />
+    </div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+</div>

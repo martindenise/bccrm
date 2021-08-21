@@ -1,0 +1,37 @@
+<?php
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT" );
+header("Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . "GMT" );
+header("Cache-Control: no-cache, must-revalidate" );
+header("Pragma: no-cache" );
+
+
+?>
+<table width="100%" border="0">
+	<thead>
+		<tr>
+			<th scope="col" width="45%">Equipment Name</th>
+			<th scope="col" width="10%" style="text-align:center">Qty.</th>
+			<th scope="col" width="25%" style="text-align:center">Extra</th>
+			<th scope="col" width="20%" style="text-align:center">Remove</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php if (empty($this->equipments)) :?>
+			<tr><td colspan="4" style="text-align: center">No tables / services added.</td></tr>
+		<?php else:
+				foreach ($this->equipments as $equipment):
+		?>
+			<tr>
+				<td><?php echo $equipment['name']; ?></td>
+				<td style="text-align:center"><?php echo $equipment['quantity']; ?></td>
+				<td style="text-align:center"><?php echo $equipment['extra']; ?></td>
+				<td style="text-align:center">
+				<a href="<?php echo $this->url(array('controller'=>'profile','action'=>'quote-rem-equipment'),'default',true); ?>?key=<?php echo $equipment['key']; ?>&qId=<?php echo $this->quoteId; ?>" class="rem-equipment">Remove</a>
+				</td>
+			</tr>
+		<?php
+				endforeach;
+			endif;
+		?>
+	</tbody>
+</table>
